@@ -7,14 +7,12 @@ import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.Response;
 import ru.halal.monopoly.service.GamerService;
 
-import java.util.List;
-
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/gamer")
+@RequestMapping("/api/gamer")
 @RequiredArgsConstructor
 public class GamerController {
     private final GamerService gamerService;
@@ -27,7 +25,7 @@ public class GamerController {
                         .statusCode(OK.value())
                         .status(OK)
                         .message("Gamers list limited 10")
-                        .data(of("gamersList", gamerService.getGamers(10)))
+                        .data(of("gamer", gamerService.getGamers(10)))
                         .build()
         );
     }
@@ -46,44 +44,40 @@ public class GamerController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Gamer> saveGamer(@RequestBody Gamer gamer) {
-        gamerService.create(gamer);
+    public ResponseEntity<Response> saveGamer(@RequestBody Gamer gamer) {
         return ResponseEntity.ok(
-                Gamer.builder()
-                        .id(gamer.getId())
-                        .name(gamer.getName())
-                        .money(gamer.getMoney())
-                        .cities(gamer.getCities())
-                        .communal(gamer.getCommunal())
-                        .airports(gamer.getAirports())
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("Gamer " + gamer.getName() + " is save")
+                        .data(of("gamer", gamerService.create(gamer)))
                         .build()
         );
     }
 
-    @PutMapping("/save")
-    public ResponseEntity<Gamer> update(@RequestBody Gamer gamer) {
-        gamerService.update(gamer);
+    @PutMapping("/update")
+    public ResponseEntity<Response> update(@RequestBody Gamer gamer) {
         return ResponseEntity.ok(
-                Gamer.builder()
-                        .name(gamer.getName())
-                        .money(gamer.getMoney())
-                        .cities(gamer.getCities())
-                        .communal(gamer.getCommunal())
-                        .airports(gamer.getAirports())
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("Gamer with id " + gamer.getId() + " is update")
+                        .data(of("gamer", gamerService.update(gamer)))
                         .build()
         );
     }
 
-    @DeleteMapping ("/delete")
-    public ResponseEntity<Gamer> deleteGamer(@RequestBody Gamer gamer) {
-        gamerService.delete(gamer);
+    @DeleteMapping ("/delete/{id}")
+    public ResponseEntity<Response> deleteGamer(@PathVariable int id) {
         return ResponseEntity.ok(
-                Gamer.builder()
-                        .name(gamer.getName())
-                        .money(gamer.getMoney())
-                        .cities(gamer.getCities())
-                        .communal(gamer.getCommunal())
-                        .airports(gamer.getAirports())
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("Gamer with id " + id + " is deleted")
+                        .data(of("gamer", gamerService.delete(id)))
                         .build()
         );
     }

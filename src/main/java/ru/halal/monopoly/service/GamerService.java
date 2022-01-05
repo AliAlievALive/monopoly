@@ -7,12 +7,11 @@ import ru.halal.monopoly.domain.ownerships.Communal;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public interface GamerService {
     Gamer create(Gamer gamer);
 
-    void update(Gamer gamer);
+    Gamer update(Gamer gamer);
 
     void changeMoneyCounts(int id, int money);
 
@@ -36,5 +35,5 @@ public interface GamerService {
 
     Gamer getGamer(int id);
 
-    void delete(Gamer gamer);
+    Boolean delete(int id);
 }

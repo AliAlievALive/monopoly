@@ -17,6 +17,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Boolean.TRUE;
+
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -30,8 +32,8 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public void update(Gamer gamer) {
-        gamerRepo.save(gamer);
+    public Gamer update(Gamer gamer) {
+        return gamerRepo.saveAndFlush(gamer);
     }
 
     @Override
@@ -130,7 +132,8 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public void delete(Gamer gamer) {
-        gamerRepo.delete(gamer);
+    public Boolean delete(int id) {
+        gamerRepo.deleteById(id);
+        return TRUE;
     }
 }
