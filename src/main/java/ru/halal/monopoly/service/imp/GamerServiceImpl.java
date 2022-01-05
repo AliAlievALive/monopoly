@@ -2,6 +2,7 @@ package ru.halal.monopoly.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.ownerships.Airport;
@@ -12,6 +13,7 @@ import ru.halal.monopoly.service.GamerService;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,8 +115,8 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public List<Gamer> getGamers() {
-        return gamerRepo.findAll();
+    public Collection<Gamer> getGamers(int limit) {
+        return gamerRepo.findAll(PageRequest.of(0, limit)).toList();
     }
 
     @Override

@@ -5,6 +5,7 @@ import ru.halal.monopoly.domain.ownerships.Airport;
 import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.domain.ownerships.Communal;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public interface GamerService {
 
     int getMoney(Gamer gamer);
 
-    List<Gamer> getGamers();
+    Collection<Gamer> getGamers(int limit);
 
     Gamer getGamer(int id);
 
