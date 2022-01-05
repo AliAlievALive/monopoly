@@ -3,81 +3,81 @@ package ru.halal.monopoly.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.Response;
-import ru.halal.monopoly.service.GamerService;
+import ru.halal.monopoly.domain.ownerships.City;
+import ru.halal.monopoly.service.CityService;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/gamer")
+@RequestMapping("/api/ownership/city")
 @RequiredArgsConstructor
-public class GamerController {
-    private final GamerService gamerService;
+public class CityController {
+    private final CityService cityService;
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getGamers() {
+    public ResponseEntity<Response> getCityList() {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Gamers list limited 10")
-                        .data(of("gamer", gamerService.getGamers(10)))
+                        .message("Cities list limited 10")
+                        .data(of("city", cityService.getCities(10)))
                         .build()
         );
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<Response> getGamer(@PathVariable int id) {
+    public ResponseEntity<Response> getCity(@PathVariable int id) {
             return ResponseEntity.ok(
                     Response.builder()
                             .timestamp(now())
                             .statusCode(OK.value())
                             .status(OK)
-                            .message("Gamer with " + id + " is found")
-                            .data(of("gamer", gamerService.getGamer(id)))
+                            .message("City with " + id + " is found")
+                            .data(of("city", cityService.getCity(id)))
                             .build()
             );
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Response> saveGamer(@RequestBody Gamer gamer) {
+    public ResponseEntity<Response> saveCity(@RequestBody City city) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Gamer " + gamer.getName() + " is save")
-                        .data(of("gamer", gamerService.create(gamer)))
+                        .message("City " + city.getName() + " is save")
+                        .data(of("city", cityService.create(city)))
                         .build()
         );
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Response> updateGamer(@RequestBody Gamer gamer) {
+    public ResponseEntity<Response> updateCity(@RequestBody City city) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Gamer with id " + gamer.getId() + " is updated")
-                        .data(of("gamer", gamerService.update(gamer)))
+                        .message("City with id " + city.getId() + " is updated")
+                        .data(of("city", cityService.update(city)))
                         .build()
         );
     }
 
     @DeleteMapping ("/delete/{id}")
-    public ResponseEntity<Response> deleteGamer(@PathVariable int id) {
+    public ResponseEntity<Response> deleteCity(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Gamer with id " + id + " is deleted")
-                        .data(of("gamer", gamerService.delete(id)))
+                        .message("City with id " + id + " is deleted")
+                        .data(of("city", cityService.delete(id)))
                         .build()
         );
     }

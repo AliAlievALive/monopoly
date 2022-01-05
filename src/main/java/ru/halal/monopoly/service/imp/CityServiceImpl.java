@@ -2,6 +2,7 @@ package ru.halal.monopoly.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.ownerships.City;
@@ -12,6 +13,8 @@ import ru.halal.monopoly.service.CityService;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+
+import static java.lang.Boolean.TRUE;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +28,11 @@ public class CityServiceImpl implements CityService {
     @Override
     public City create(City city) {
         return cityRepo.save(city);
+    }
+
+    @Override
+    public City update(City city) {
+        return cityRepo.saveAndFlush(city);
     }
 
     @Override
@@ -58,5 +66,21 @@ public class CityServiceImpl implements CityService {
             gamerRepo.save(gamerOwner);
             gamerRepo.save(gamer2);
         }
+    }
+
+    @Override
+    public List<City> getCities(int limit) {
+        return cityRepo.findAll(PageRequest.of(0, limit)).toList();
+    }
+
+    @Override
+    public City getCity(int id) {
+        return cityRepo.getById(id);
+    }
+
+    @Override
+    public Boolean delete(int id) {
+        cityRepo.deleteById(id);
+        return TRUE;
     }
 }
