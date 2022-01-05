@@ -42,7 +42,12 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public Airport getAirport(int id) {
-        return airportRepo.getById(id);
+        Airport airport = null;
+        Optional<Airport> airportOptional = airportRepo.findById(id);
+        if (airportOptional.isPresent()) {
+            airport = airportOptional.get();
+        }
+        return airport;
     }
 
     @Override

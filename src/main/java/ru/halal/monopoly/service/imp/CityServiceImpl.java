@@ -75,7 +75,12 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City getCity(int id) {
-        return cityRepo.getById(id);
+        City city = null;
+        Optional<City> optionalCity = cityRepo.findById(id);
+        if (optionalCity.isPresent()) {
+            city = optionalCity.get();
+        }
+        return city;
     }
 
     @Override

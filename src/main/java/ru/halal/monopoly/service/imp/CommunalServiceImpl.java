@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
+import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.domain.ownerships.Communal;
 import ru.halal.monopoly.repository.CommunalRepo;
 import ru.halal.monopoly.repository.GamerRepo;
@@ -42,7 +43,12 @@ public class CommunalServiceImpl implements CommunalService {
 
     @Override
     public Communal getCommunal(int id) {
-        return communalRepo.getById(id);
+        Communal communal = null;
+        Optional<Communal> optionalCommunal = communalRepo.findById(id);
+        if (optionalCommunal.isPresent()) {
+            communal = optionalCommunal.get();
+        }
+        return communal;
     }
 
     @Override
