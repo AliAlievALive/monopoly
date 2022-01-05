@@ -1,7 +1,6 @@
 package ru.halal.monopoly.service;
 
 import ru.halal.monopoly.domain.Gamer;
-import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.domain.ownerships.Communal;
 
 import java.util.Collection;
@@ -9,7 +8,7 @@ import java.util.Collection;
 public interface CommunalService {
     Communal create(Communal communal);
 
-    Communal update(Communal city);
+    Communal update(Communal communal);
 
     Collection<Communal> getCommunalList(int limit);
 

@@ -2,17 +2,20 @@ package ru.halal.monopoly.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.ownerships.Airport;
-import ru.halal.monopoly.domain.ownerships.Communal;
 import ru.halal.monopoly.repository.AirportRepo;
 import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.service.AirportService;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+import static java.lang.Boolean.TRUE;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +28,27 @@ public class AirportServiceImpl implements AirportService {
     @Override
     public Airport create(Airport airport) {
         return airportRepo.save(airport);
+    }
+
+    @Override
+    public Airport update(Airport airport) {
+        return airportRepo.saveAndFlush(airport);
+    }
+
+    @Override
+    public Collection<Airport> getAirportList(int limit) {
+        return airportRepo.findAll(PageRequest.of(0, limit)).toList();
+    }
+
+    @Override
+    public Airport getAirport(int id) {
+        return airportRepo.getById(id);
+    }
+
+    @Override
+    public Boolean delete(int id) {
+        airportRepo.deleteById(id);
+        return TRUE;
     }
 
     @Override
