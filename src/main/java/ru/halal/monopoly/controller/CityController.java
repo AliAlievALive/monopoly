@@ -17,6 +17,19 @@ import static org.springframework.http.HttpStatus.OK;
 public class CityController {
     private final CityService cityService;
 
+    @PostMapping("/save")
+    public ResponseEntity<Response> saveCity(@RequestBody City city) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("City " + city.getName() + " is save")
+                        .data(of("city", cityService.create(city)))
+                        .build()
+        );
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Response> getCityList() {
         return ResponseEntity.ok(
@@ -43,19 +56,6 @@ public class CityController {
             );
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Response> saveCity(@RequestBody City city) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("City " + city.getName() + " is save")
-                        .data(of("city", cityService.create(city)))
-                        .build()
-        );
-    }
-
     @PutMapping("/update")
     public ResponseEntity<Response> updateCity(@RequestBody City city) {
         return ResponseEntity.ok(
@@ -78,6 +78,32 @@ public class CityController {
                         .status(OK)
                         .message("City with id " + id + " is deleted")
                         .data(of("city", cityService.delete(id)))
+                        .build()
+        );
+    }
+
+    @GetMapping({"/deposit/{id}"})
+    public ResponseEntity<Response> cityToDeposit(@PathVariable int id) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("City with id " + id + "set to deposit")
+                        .data(of("city", cityService.cityToDeposit(id)))
+                        .build()
+        );
+    }
+
+    @GetMapping({"/from_deposit/{id}"})
+    public ResponseEntity<Response> cityFromDeposit(@PathVariable int id) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("City with id " + id + "get from deposit")
+                        .data(of("city", cityService.cityFromDeposit(id)))
                         .build()
         );
     }

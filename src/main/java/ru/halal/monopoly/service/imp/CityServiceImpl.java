@@ -11,9 +11,11 @@ import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.service.CityService;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @RequiredArgsConstructor
@@ -36,9 +38,35 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public int cityToDeposit(City city) {
-        city.setInDeposit(true);
-        return cityRepo.findByName(city.getName()).getDepositCost();
+    public int cityToDeposit(int id) {
+        int depositMoney = 0;
+        Optional<City> optionalCity = cityRepo.findById(id);
+        if (optionalCity.isPresent()) {
+            City city = optionalCity.get();
+            city.setInDeposit(true);
+            depositMoney = city.getDepositCost();
+            cityRepo.save(city);
+        }
+        return depositMoney;
+    }
+
+    @Override
+    public Boolean cityFromDeposit(int id) {
+        Optional<City> optionalCity = cityRepo.findById(id);
+        if (optionalCity.isPresent()) {
+            City city = optionalCity.get();
+            Gamer gamer = optionalCity.get().getGamer();
+            int gamerMoney = gamer.getMoney();
+            int depositCost = city.getDepositCost();
+            if (gamerMoney >= depositCost) {
+                gamer.setMoney(gamerMoney - depositCost);
+                city.setInDeposit(false);
+                cityRepo.save(city);
+                gamerRepo.save(gamer);
+                return TRUE;
+            }
+        }
+        return FALSE;
     }
 
     @Override
