@@ -1,6 +1,7 @@
 package ru.halal.monopoly.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.halal.monopoly.domain.ownerships.Airport;
@@ -8,6 +9,7 @@ import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.domain.ownerships.Communal;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,18 +29,23 @@ public class Gamer {
     private int id;
     private String name;
     private int money;
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "gamer")
     @ToString.Exclude
+    @JsonManagedReference
     private List<City> cities;
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     @ToString.Exclude
     private List<Communal> communal;
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     @ToString.Exclude
     private List<Airport> airports;
 
     public void addCity(City city) {
+        if (cities == null) {
+            cities = new ArrayList<>();
+        }
         cities.add(city);
+        city.setGamer(this);
     }
 
     public void addCommunal(Communal communal) {

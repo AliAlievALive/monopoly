@@ -1,20 +1,17 @@
 package ru.halal.monopoly.domain.ownerships;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import ru.halal.monopoly.domain.Gamer;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
+import javax.persistence.*;
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.AUTO;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Getter
 @Setter
 @ToString
@@ -30,7 +27,9 @@ public class City extends Ownership{
     private int homeCost;
     private boolean isEnableToBuy;
     private boolean isInDeposit;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "gamer_id")
+    @JsonBackReference
     private Gamer gamer;
     private int homeCount;
 
