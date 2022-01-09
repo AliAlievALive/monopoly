@@ -31,7 +31,7 @@ public class GamerController {
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<Response> getGamer(@PathVariable int id) {
+    public ResponseEntity<Response> addCityToGamer(@PathVariable int id) {
             return ResponseEntity.ok(
                     Response.builder()
                             .timestamp(now())
@@ -78,6 +78,19 @@ public class GamerController {
                         .status(OK)
                         .message("Gamer with id " + id + " is deleted")
                         .data(of("gamer", gamerService.delete(id)))
+                        .build()
+        );
+    }
+
+    @GetMapping({"/add_city_to_gamer/{cityId}/{gamerId}"})
+    public ResponseEntity<Response> addCityToGamer(@PathVariable int cityId, @PathVariable int gamerId) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("To gamer with id " + gamerId + " is added city with id " + cityId)
+                        .data(of("gamer", gamerService.addCityToGamer(cityId, gamerId)))
                         .build()
         );
     }

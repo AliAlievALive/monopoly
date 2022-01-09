@@ -15,7 +15,7 @@ public interface GamerService {
 
     void changeMoneyCounts(int id, int money);
 
-    void addCityToGamer(City city, int id);
+    Boolean addCityToGamer(int cityId, int gamerId);
 
     void addCommunalToGamer(Communal communal, int id);
 

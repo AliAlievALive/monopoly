@@ -8,6 +8,7 @@ import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.ownerships.Airport;
 import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.domain.ownerships.Communal;
+import ru.halal.monopoly.repository.CityRepo;
 import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.service.GamerService;
 
@@ -25,6 +26,7 @@ import static java.lang.Boolean.TRUE;
 @Slf4j
 public class GamerServiceImpl implements GamerService {
     private final GamerRepo gamerRepo;
+    private final CityRepo cityRepo;
 
     @Override
     public Gamer create(Gamer gamer) {
@@ -47,13 +49,14 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public void addCityToGamer(City city, int id) {
-        Optional<Gamer> gamerOptional = gamerRepo.findById(id);
-        if (gamerOptional.isPresent()) {
-            Gamer gamer = gamerOptional.get();
-            gamer.addCity(city);
-            gamerRepo.save(gamer);
-        }
+    public Boolean addCityToGamer(int cityId, int gamerId) {
+        Optional<Gamer> gamerOptional = gamerRepo.findById(gamerId);
+        Optional<City> cityOptional = cityRepo.findById(cityId);
+        Gamer gamer = gamerOptional.get();
+        City city = cityOptional.get();
+        gamer.addCity(city);
+        gamerRepo.save(gamer);
+        return TRUE;
     }
 
     @Override
