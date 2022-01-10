@@ -31,7 +31,7 @@ public class GamerController {
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<Response> addCityToGamer(@PathVariable int id) {
+    public ResponseEntity<Response> getGamer(@PathVariable int id) {
             return ResponseEntity.ok(
                     Response.builder()
                             .timestamp(now())
