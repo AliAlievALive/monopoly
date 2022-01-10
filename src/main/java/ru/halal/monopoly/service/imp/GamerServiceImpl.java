@@ -40,13 +40,12 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public void changeMoneyCounts(int id, int money) {
+    public int changeMoneyCounts(int id, int money) {
         Optional<Gamer> gamerOptional = gamerRepo.findById(id);
-        if (gamerOptional.isPresent()) {
-            Gamer gamer = gamerOptional.get();
-            gamer.setMoney(gamer.getMoney() + money);
-            gamerRepo.save(gamer);
-        }
+        Gamer gamer = gamerOptional.get();
+        gamer.setMoney(gamer.getMoney() + money);
+        gamerRepo.save(gamer);
+        return gamer.getMoney();
     }
 
     @Override
@@ -135,6 +134,8 @@ public class GamerServiceImpl implements GamerService {
         City cityForMove = optionalCity.get();
         if (fromGamer.removeCity(cityForMove)) {
             toGamer.addCity(cityForMove);
+            gamerRepo.save(fromGamer);
+            gamerRepo.save(toGamer);
             return TRUE;
         }
         return FALSE;

@@ -109,4 +109,17 @@ public class GamerController {
                         .build()
         );
     }
+
+    @GetMapping({"/money/{id}/{money}"})
+    public ResponseEntity<Response> cityToAnotherGamer(@PathVariable int id, @PathVariable int money) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("Gamers money with id " + id + " change to " + money + " money")
+                        .data(of("gamer", gamerService.changeMoneyCounts(id, money)))
+                        .build()
+        );
+    }
 }

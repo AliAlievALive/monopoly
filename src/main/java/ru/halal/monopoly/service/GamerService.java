@@ -13,7 +13,7 @@ public interface GamerService {
 
     Gamer update(Gamer gamer);
 
-    void changeMoneyCounts(int id, int money);
+    int changeMoneyCounts(int id, int money);
 
     Boolean addCityToGamer(int cityId, int gamerId);
 
