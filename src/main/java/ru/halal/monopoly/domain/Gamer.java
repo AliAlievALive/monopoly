@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static javax.persistence.GenerationType.AUTO;
 
 @Entity
@@ -46,6 +48,15 @@ public class Gamer {
         }
         cities.add(city);
         city.setGamer(this);
+    }
+
+    public Boolean removeCity(City cityForRemove) {
+        int index = cities.indexOf(cityForRemove);
+        if (index >= 0) {
+            cities.remove(index);
+            return TRUE;
+        }
+        return FALSE;
     }
 
     public void addCommunal(Communal communal) {

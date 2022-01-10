@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @RequiredArgsConstructor
@@ -122,6 +123,21 @@ public class GamerServiceImpl implements GamerService {
     @Override
     public Collection<Gamer> getGamers(int limit) {
         return gamerRepo.findAll(PageRequest.of(0, limit)).toList();
+    }
+
+    @Override
+    public Boolean giveCityToAnotherGamer(int fromId, int toId, int cityId) {
+        Optional<Gamer> optionalFromGamer = gamerRepo.findById(fromId);
+        Optional<Gamer> optionalToGamer = gamerRepo.findById(toId);
+        Gamer fromGamer = optionalFromGamer.get();
+        Gamer toGamer = optionalToGamer.get();
+        Optional<City> optionalCity = fromGamer.getCities().stream().filter(city -> city.getId() == cityId).findFirst();
+        City cityForMove = optionalCity.get();
+        if (fromGamer.removeCity(cityForMove)) {
+            toGamer.addCity(cityForMove);
+            return TRUE;
+        }
+        return FALSE;
     }
 
     @Override

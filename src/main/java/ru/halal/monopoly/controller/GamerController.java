@@ -94,4 +94,19 @@ public class GamerController {
                         .build()
         );
     }
+
+    @GetMapping({"/city_to_another_gamer/{fromId}/{toId}/{cityId}"})
+    public ResponseEntity<Response> cityToAnotherGamer(@PathVariable int fromId, @PathVariable int toId, @PathVariable int cityId) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("Gamer with id " + fromId +
+                                " give city with id " + cityId +
+                                " to gamer with id " + toId)
+                        .data(of("gamer", gamerService.giveCityToAnotherGamer(fromId, toId, cityId)))
+                        .build()
+        );
+    }
 }

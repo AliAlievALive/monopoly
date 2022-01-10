@@ -36,4 +36,6 @@ public interface GamerService {
     Gamer getGamer(int id);
 
     Boolean delete(int id);
+
+    Boolean giveCityToAnotherGamer(int fromGamerId, int toGamerId, int cityId);
 }
