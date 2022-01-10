@@ -43,9 +43,13 @@ public class CityServiceImpl implements CityService {
         Optional<City> optionalCity = cityRepo.findById(id);
         if (optionalCity.isPresent()) {
             City city = optionalCity.get();
-            city.setInDeposit(true);
-            depositMoney = city.getDepositCost();
-            cityRepo.save(city);
+            if (!city.isInDeposit()) {
+                city.setInDeposit(true);
+                depositMoney = city.getDepositCost();
+                Gamer gamer = city.getGamer();
+                gamer.setMoney(gamer.getMoney() + depositMoney);
+                cityRepo.save(city);
+            }
         }
         return depositMoney;
     }
@@ -58,11 +62,10 @@ public class CityServiceImpl implements CityService {
             Gamer gamer = optionalCity.get().getGamer();
             int gamerMoney = gamer.getMoney();
             int depositCost = city.getDepositCost();
-            if (gamerMoney >= depositCost) {
+            if (gamerMoney >= depositCost && city.isInDeposit()) {
                 gamer.setMoney(gamerMoney - depositCost);
                 city.setInDeposit(false);
                 cityRepo.save(city);
-                gamerRepo.save(gamer);
                 return TRUE;
             }
         }

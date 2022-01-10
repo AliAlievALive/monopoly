@@ -89,7 +89,7 @@ public class CityController {
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("City with id " + id + "set to deposit")
+                        .message("City with id " + id + " set to deposit")
                         .data(of("city", cityService.cityToDeposit(id)))
                         .build()
         );
