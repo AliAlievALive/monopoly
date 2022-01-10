@@ -1,6 +1,5 @@
 package ru.halal.monopoly.service;
 
-import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.ownerships.City;
 
 import java.util.Collection;
@@ -20,9 +19,7 @@ public interface CityService {
 
     Boolean cityFromDeposit(int id);
 
-    void addHome(City city, int money);
+    Boolean addHome(int id);
 
-    int soldHome(City city);
-
-    void changeToAnotherGamer(City city, Gamer gamer2);
+    Boolean soldHome(int id);
 }

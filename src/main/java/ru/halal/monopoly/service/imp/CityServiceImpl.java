@@ -7,11 +7,9 @@ import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.repository.CityRepo;
-import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.service.CityService;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +23,6 @@ import static java.lang.Boolean.TRUE;
 public class CityServiceImpl implements CityService {
     private static final int MAX_HOME_COUNT = 5;
     private final CityRepo cityRepo;
-    private final GamerRepo gamerRepo;
 
     @Override
     public City create(City city) {
@@ -73,30 +70,35 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void addHome(City city, int money) {
-        if (city.getHomeCount() < MAX_HOME_COUNT && money == city.getHomeCost()) {
+    public Boolean addHome(int id) {
+        Optional<City> optionalCity = cityRepo.findById(id);
+        City city = optionalCity.get();
+        Gamer gamer = optionalCity.get().getGamer();
+        int gamerMoney = gamer.getMoney();
+        int homeCost = city.getHomeCost();
+        if (gamerMoney >= homeCost && !city.isInDeposit() && city.getHomeCount() < MAX_HOME_COUNT) {
+            gamer.setMoney(gamerMoney - homeCost);
             city.setHomeCount(city.getHomeCount() + 1);
             cityRepo.save(city);
+            return TRUE;
         }
+        return FALSE;
     }
 
     @Override
-    public int soldHome(City city) {
-        city.setHomeCount(city.getHomeCount() - 1);
-        return city.getHomeCost();
-    }
-
-    @Override
-    public void changeToAnotherGamer(City city, Gamer gamer2) {
-        Gamer gamerOwner = city.getGamer();
-        List<City> owner1City = gamerOwner.getCities();
-        Optional<City> foundCityOpt = owner1City.stream().filter(c -> c == city).findFirst();
-        if (foundCityOpt.isPresent()) {
-            gamer2.addCity(foundCityOpt.get());
-            gamerOwner.getCities().remove(foundCityOpt.get());
-            gamerRepo.save(gamerOwner);
-            gamerRepo.save(gamer2);
+    public Boolean soldHome(int id) {
+        Optional<City> optionalCity = cityRepo.findById(id);
+        City city = optionalCity.get();
+        Gamer gamer = optionalCity.get().getGamer();
+        int gamerMoney = gamer.getMoney();
+        int homeCost = city.getHomeCost();
+        if (!city.isInDeposit() && city.getHomeCount() > 0) {
+            gamer.setMoney(gamerMoney + homeCost);
+            city.setHomeCount(city.getHomeCount() - 1);
+            cityRepo.save(city);
+            return TRUE;
         }
+        return FALSE;
     }
 
     @Override

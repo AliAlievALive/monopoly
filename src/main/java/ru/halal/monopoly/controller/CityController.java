@@ -102,8 +102,34 @@ public class CityController {
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("City with id " + id + "get from deposit")
+                        .message("City with id " + id + " get from deposit")
                         .data(of("city", cityService.cityFromDeposit(id)))
+                        .build()
+        );
+    }
+
+    @GetMapping({"/add_home/{id}"})
+    public ResponseEntity<Response> addHome(@PathVariable int id) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("To city with id " + id + " added home")
+                        .data(of("city", cityService.addHome(id)))
+                        .build()
+        );
+    }
+
+    @GetMapping({"/sold_home/{id}"})
+    public ResponseEntity<Response> soldHome(@PathVariable int id) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("From city with id " + id + " sold home")
+                        .data(of("city", cityService.soldHome(id)))
                         .build()
         );
     }
