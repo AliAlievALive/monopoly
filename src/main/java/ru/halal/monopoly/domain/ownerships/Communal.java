@@ -1,12 +1,10 @@
 package ru.halal.monopoly.domain.ownerships;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import ru.halal.monopoly.domain.Gamer;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import java.util.Objects;
 
@@ -28,7 +26,9 @@ public class Communal extends Ownership {
     private int depositCost;
     private boolean isEnableToBuy;
     private boolean isInDeposit;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "gamer_id")
+    @JsonBackReference
     private Gamer gamer;
 
     @Override

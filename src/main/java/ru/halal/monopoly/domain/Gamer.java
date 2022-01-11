@@ -35,11 +35,13 @@ public class Gamer {
     @ToString.Exclude
     @JsonManagedReference
     private List<City> cities;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "gamer")
     @ToString.Exclude
+    @JsonManagedReference
     private List<Communal> communal;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "gamer")
     @ToString.Exclude
+    @JsonManagedReference
     private List<Airport> airports;
 
     public void addCity(City city) {
@@ -59,12 +61,38 @@ public class Gamer {
         return FALSE;
     }
 
-    public void addCommunal(Communal communal) {
-        this.communal.add(communal);
+    public void addCommunal(Communal communalForAdd) {
+        if (communal == null) {
+            communal = new ArrayList<>();
+        }
+        communal.add(communalForAdd);
+        communalForAdd.setGamer(this);
+    }
+
+    public Boolean removeCommunal(Communal communalForRemove) {
+        int index = communal.indexOf(communalForRemove);
+        if (index >= 0) {
+            communal.remove(index);
+            return TRUE;
+        }
+        return FALSE;
     }
 
     public void addAirport(Airport airport) {
+        if (airports == null) {
+            airports = new ArrayList<>();
+        }
         airports.add(airport);
+        airport.setGamer(this);
+    }
+
+    public Boolean removeAirport(Airport airport) {
+        int index = airports.indexOf(airport);
+        if (index >= 0) {
+            airports.remove(index);
+            return TRUE;
+        }
+        return FALSE;
     }
 
     @Override
