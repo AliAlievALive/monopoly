@@ -11,9 +11,9 @@ services:
       MYSQL_DATABASE: 'monopoly'
       MYSQL_PASSWORD: 'root'
     ports:
-      - '3306:3306'
+      - '3310:3306'
     expose:
-      - '3306'
+      - '3310'
 
 volumes:
   monopoly-db: {}
