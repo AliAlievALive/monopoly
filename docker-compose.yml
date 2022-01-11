@@ -15,5 +15,20 @@ services:
     expose:
       - '3310'
 
+  test_db:
+    image: mysql:5.7
+    volumes:
+      - monopoly-test-db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: 'monopoly_test'
+      MYSQL_PASSWORD: 'root'
+    ports:
+      - '3320:3306'
+    expose:
+      - '3320'
+
 volumes:
   monopoly-db: {}
+  monopoly-test-db: {}
