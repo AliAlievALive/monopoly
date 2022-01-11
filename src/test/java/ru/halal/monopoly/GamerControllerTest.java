@@ -32,13 +32,13 @@ public class GamerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    void gamersGetsTest() throws Exception {
-        this.mockMvc.perform(get("/api/gamer/list"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Gamers list limited 10")));
-    }
+//    @Test
+//    void gamersGetsTest() throws Exception {
+//        this.mockMvc.perform(get("/api/gamer/list"))
+//                .andDo(print())
+//                .andExpect(status().isOk());
+//                .andExpect(content().string(containsString("Gamers list limited 10")));
+//    }
 
     @Test
     void saveGamerTest() throws Exception {
