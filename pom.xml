@@ -27,29 +27,29 @@
         </repository>
     </distributionManagement>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-bom</artifactId>
-                <version>1.12.138</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>com.amazonaws</groupId>-->
+<!--                <artifactId>aws-java-sdk-bom</artifactId>-->
+<!--                <version>1.12.138</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
+<!--        </dependencies>-->
+<!--    </dependencyManagement>-->
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-aws-context</artifactId>
-            <version>2.2.6.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-aws-autoconfigure</artifactId>
-            <version>2.2.6.RELEASE</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-aws-context</artifactId>-->
+<!--            <version>2.2.6.RELEASE</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-aws-autoconfigure</artifactId>-->
+<!--            <version>2.2.6.RELEASE</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -109,12 +109,12 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>io.spring.repo.maven.release</id>
-            <url>https://repo.spring.io/release/</url>
-            <snapshots><enabled>false</enabled></snapshots>
-        </repository>
-    </repositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>io.spring.repo.maven.release</id>-->
+<!--            <url>https://repo.spring.io/release/</url>-->
+<!--            <snapshots><enabled>false</enabled></snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
 </project>
