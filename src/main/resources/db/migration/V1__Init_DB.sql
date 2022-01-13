@@ -9,7 +9,8 @@ create table airport
     rent_cost        integer      not null,
     gamer_id         integer,
     primary key (id)
-) engine = InnoDB;
+) engine = InnoDB
+  DEFAULT CHARSET = utf8;
 
 create table city
 (
@@ -25,7 +26,8 @@ create table city
     rent_cost        integer      not null,
     gamer_id         integer,
     primary key (id)
-) engine = InnoDB;
+) engine = InnoDB
+  DEFAULT CHARSET = utf8;
 
 create table communal
 (
@@ -38,7 +40,8 @@ create table communal
     rent_cost        integer      not null,
     gamer_id         integer,
     primary key (id)
-) engine = InnoDB;
+) engine = InnoDB
+  DEFAULT CHARSET = utf8;
 
 create table gamer
 (
@@ -46,7 +49,8 @@ create table gamer
     money integer      not null,
     name  varchar(255) not null,
     primary key (id)
-) engine = InnoDB;
+) engine = InnoDB
+  DEFAULT CHARSET = utf8;
 
 create table hibernate_sequence
 (

@@ -5,9 +5,10 @@ services:
     image: mysql
     volumes:
       - monopoly-db:/var/lib/mysql
-#    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--max-allowed-packet=67108864" ]
     restart: always
     environment:
+      LANG: C.UTF-8
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_DATABASE: 'monopoly'
       MYSQL_PASSWORD: 'root'
@@ -20,9 +21,10 @@ services:
     image: mysql
     volumes:
       - monopoly-test-db:/var/lib/mysql
-#    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--max-allowed-packet=67108864" ]
     restart: always
     environment:
+      LANG: C.UTF-8
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_DATABASE: 'monopoly_test'
       MYSQL_PASSWORD: 'root'
