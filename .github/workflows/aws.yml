@@ -32,8 +32,7 @@ on:
       - master
   workflow_dispatch:
 
-env:
-  AWS_REGION: "us-east-1"                 # set this to your preferred AWS region, e.g. us-west-1
+env:                 # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: "244136396986.dkr.ecr.us-east-1.amazonaws.com/monopoly"           # set this to your Amazon ECR repository name
   ECS_SERVICE: "sample-app-service"                 # set this to your Amazon ECS service name
   ECS_CLUSTER: "monopolyCluster"                 # set this to your Amazon ECS cluster name
@@ -61,7 +60,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Login to Amazon ECR
       id: login-ecr
