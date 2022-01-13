@@ -14,8 +14,18 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+
       - name: Build the docker-compose stack
         run: docker-compose -f "docker-compose.yml" up -d --build
+
+      - name: Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          service: sample-app-service
+          cluster: monopolyCluster
+          wait-for-service-stability: true
+
       - name: build with maven
         run: mvn -B deploy
         env:
