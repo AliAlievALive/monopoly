@@ -38,6 +38,7 @@ env:
   ECS_SERVICE: "sample-app-service"                 # set this to your Amazon ECS service name
   ECS_CLUSTER: "monopolyCluster"                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: "task-definition.json" # set this to the path to your Amazon ECS task definition
+  DEPLOY_PACKAGE_NAME: "monopoly.zip"
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: "sample-app"           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
@@ -51,6 +52,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+
+    - name: Create Zip deployment package
+      run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
