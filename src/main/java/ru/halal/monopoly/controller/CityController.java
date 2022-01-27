@@ -43,7 +43,7 @@ public class CityController {
         );
     }
 
-    @GetMapping({"/{id}"})
+    @GetMapping({"{id}"})
     public ResponseEntity<Response> getCity(@PathVariable int id) {
             return ResponseEntity.ok(
                     Response.builder()
@@ -56,7 +56,7 @@ public class CityController {
             );
     }
 
-    @PutMapping("/")
+    @PutMapping
     public ResponseEntity<Response> updateCity(@RequestBody City city) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -69,7 +69,7 @@ public class CityController {
         );
     }
 
-    @DeleteMapping ("/{id}")
+    @DeleteMapping ("{id}")
     public ResponseEntity<Response> deleteCity(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

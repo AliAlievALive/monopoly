@@ -30,7 +30,7 @@ public class GamerController {
         );
     }
 
-    @GetMapping({"/{id}"})
+    @GetMapping({"{id}"})
     public ResponseEntity<Response> getGamer(@PathVariable int id) {
             return ResponseEntity.ok(
                     Response.builder()
@@ -69,7 +69,7 @@ public class GamerController {
         );
     }
 
-    @DeleteMapping ("/{id}")
+    @DeleteMapping ("{id}")
     public ResponseEntity<Response> deleteGamer(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

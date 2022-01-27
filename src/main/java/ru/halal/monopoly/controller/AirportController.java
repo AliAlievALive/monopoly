@@ -30,7 +30,7 @@ public class AirportController {
         );
     }
 
-    @GetMapping({"/{id}"})
+    @GetMapping({"{id}"})
     public ResponseEntity<Response> getAirport(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -69,7 +69,7 @@ public class AirportController {
         );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Response> deleteAirport(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

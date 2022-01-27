@@ -30,7 +30,7 @@ public class CommunalController {
         );
     }
 
-    @GetMapping({"/{id}"})
+    @GetMapping({"{id}"})
     public ResponseEntity<Response> getCommunal(@PathVariable int id) {
             return ResponseEntity.ok(
                     Response.builder()
@@ -69,7 +69,7 @@ public class CommunalController {
         );
     }
 
-    @DeleteMapping ("/{id}")
+    @DeleteMapping ("{id}")
     public ResponseEntity<Response> deleteCommunal(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
