@@ -38,7 +38,7 @@ public class GamerController {
                             .statusCode(OK.value())
                             .status(OK)
                             .message("Gamer with " + id + " is found")
-                            .data(of("gamer", gamerService.getGamer(id)))
+                            .data(of("gamer", gamerService.getGamerById(id)))
                             .build()
             );
     }

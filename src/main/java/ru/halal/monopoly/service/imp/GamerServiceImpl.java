@@ -142,7 +142,7 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public Gamer getGamer(int id) {
+    public Gamer getGamerById(int id) {
         Gamer gamer = null;
         Optional<Gamer> optionalGamer = gamerRepo.findById(id);
         if (optionalGamer.isPresent()) {

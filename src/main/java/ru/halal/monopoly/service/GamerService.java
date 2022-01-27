@@ -33,7 +33,7 @@ public interface GamerService {
 
     Collection<Gamer> getGamers(int limit);
 
-    Gamer getGamer(int id);
+    Gamer getGamerById(int id);
 
     Boolean delete(int id);
 

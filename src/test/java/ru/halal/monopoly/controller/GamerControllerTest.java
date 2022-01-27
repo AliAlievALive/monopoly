@@ -1,4 +1,4 @@
-package ru.halal.monopoly;
+package ru.halal.monopoly.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -28,10 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GamerControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    private final static String URL = "/api/gamer";
 
     @Test
     void gamersGetsTest() throws Exception {
-        this.mockMvc.perform(get("/api/gamer/list"))
+        this.mockMvc.perform(get(URL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Gamers list limited 10")));
@@ -40,14 +41,26 @@ public class GamerControllerTest {
 
     @Test
     void saveGamerTest() throws Exception {
-        this.mockMvc.perform(post("/api/gamer/save")
-                        .content(asJsonString(
-                                new Gamer(0, "Anton", 15000,
-                                        new ArrayList<>(), new ArrayList<>(), new ArrayList<>())))
+        Gamer anton = new Gamer(0, "Anton", 15000,
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this.mockMvc.perform(post(URL)
+                        .content(asJsonString(anton))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("")));
+                .andExpect(content().string(containsString("Gamer Anton is save")));
+    }
+
+    @Test
+    void updateGamerTest() throws Exception {
+        Gamer anton = new Gamer(0, "Anton", 15000,
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        this.mockMvc.perform(post(URL)
+                        .content(asJsonString(anton))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Gamer Anton is save")));
     }
 
     private static String asJsonString(final Object obj) {
