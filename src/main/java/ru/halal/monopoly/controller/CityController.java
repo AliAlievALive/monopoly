@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class CityController {
     private final CityService cityService;
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Response> saveCity(@RequestBody City city) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -30,7 +30,7 @@ public class CityController {
         );
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<Response> getCityList() {
         return ResponseEntity.ok(
                 Response.builder()
@@ -56,7 +56,7 @@ public class CityController {
             );
     }
 
-    @PutMapping("/update")
+    @PutMapping("/")
     public ResponseEntity<Response> updateCity(@RequestBody City city) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -69,7 +69,7 @@ public class CityController {
         );
     }
 
-    @DeleteMapping ("/delete/{id}")
+    @DeleteMapping ("/{id}")
     public ResponseEntity<Response> deleteCity(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

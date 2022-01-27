@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class AirportController {
     private final AirportService airportService;
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<Response> getAirportList() {
         return ResponseEntity.ok(
                 Response.builder()
@@ -43,7 +43,7 @@ public class AirportController {
         );
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Response> saveAirport(@RequestBody Airport airport) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -56,7 +56,7 @@ public class AirportController {
         );
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<Response> updateAirport(@RequestBody Airport airport) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -69,7 +69,7 @@ public class AirportController {
         );
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteAirport(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

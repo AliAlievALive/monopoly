@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class CommunalController {
     private final CommunalService communalService;
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<Response> getCommunalList() {
         return ResponseEntity.ok(
                 Response.builder()
@@ -43,7 +43,7 @@ public class CommunalController {
             );
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Response> saveCommunal(@RequestBody Communal communal) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -56,7 +56,7 @@ public class CommunalController {
         );
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<Response> updateCommunal(@RequestBody Communal communal) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -69,7 +69,7 @@ public class CommunalController {
         );
     }
 
-    @DeleteMapping ("/delete/{id}")
+    @DeleteMapping ("/{id}")
     public ResponseEntity<Response> deleteCommunal(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

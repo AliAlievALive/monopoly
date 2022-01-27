@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class GamerController {
     private final GamerService gamerService;
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<Response> getGamers() {
         return ResponseEntity.ok(
                 Response.builder()
@@ -43,7 +43,7 @@ public class GamerController {
             );
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Response> saveGamer(@RequestBody Gamer gamer) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -56,7 +56,7 @@ public class GamerController {
         );
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<Response> updateGamer(@RequestBody Gamer gamer) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -69,7 +69,7 @@ public class GamerController {
         );
     }
 
-    @DeleteMapping ("/delete/{id}")
+    @DeleteMapping ("/{id}")
     public ResponseEntity<Response> deleteGamer(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
