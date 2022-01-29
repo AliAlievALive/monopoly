@@ -40,20 +40,20 @@ services:
     ports:
       - '3310:3306'
 
-  test_db:
-    networks:
-      - db
-    container_name: monopoly-db-test
-    image: mysql
-    volumes:
-      - monopoly-db-test:/var/lib/mysql
-    restart: on-failure
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: monopoly_test
-      MYSQL_PASSWORD: root
-    ports:
-      - '3320:3306'
+#  test_db:
+#    networks:
+#      - db
+#    container_name: monopoly-db-test
+#    image: mysql
+#    volumes:
+#      - monopoly-db-test:/var/lib/mysql
+#    restart: on-failure
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: monopoly_test
+#      MYSQL_PASSWORD: root
+#    ports:
+#      - '3320:3306'
 
 networks:
   db:

@@ -49,6 +49,17 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
+    public Boolean moneyToGamerFromGamerName(String name1, int money, String name2) {
+        Gamer gamer1 = gamerRepo.findByName(name1);
+        Gamer gamer2 = gamerRepo.findByName(name2);
+        gamer1.setMoney(gamer1.getMoney() - money);
+        gamer2.setMoney(gamer2.getMoney() + money);
+        gamerRepo.save(gamer1);
+        gamerRepo.save(gamer2);
+        return TRUE;
+    }
+
+    @Override
     public Boolean addCityToGamer(int cityId, int gamerId) {
         Optional<Gamer> gamerOptional = gamerRepo.findById(gamerId);
         Optional<City> cityOptional = cityRepo.findById(cityId);

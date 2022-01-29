@@ -111,7 +111,7 @@ public class GamerController {
     }
 
     @GetMapping({"/money/{id}/{money}"})
-    public ResponseEntity<Response> cityToAnotherGamer(@PathVariable int id, @PathVariable int money) {
+    public ResponseEntity<Response> moneyToGamer(@PathVariable int id, @PathVariable int money) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
@@ -119,6 +119,23 @@ public class GamerController {
                         .status(OK)
                         .message("Gamers money with id " + id + " change to " + money + " money")
                         .data(of("gamer", gamerService.changeMoneyCounts(id, money)))
+                        .build()
+        );
+    }
+
+    @GetMapping({"/money/{name1}/{money}/{name2}"})
+    public ResponseEntity<Response> moneyToGamerFromGamerName(
+            @PathVariable String name1,
+            @PathVariable int money,
+            @PathVariable String name2
+    ) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message(name1 + " money " + money + " send to " + name2)
+                        .data(of("gamer", gamerService.moneyToGamerFromGamerName(name1, money, name2)))
                         .build()
         );
     }
