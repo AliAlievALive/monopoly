@@ -12,7 +12,7 @@ import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/gamer")
+@RequestMapping("/api/gamers")
 @RequiredArgsConstructor
 public class GamerController {
     private final GamerService gamerService;

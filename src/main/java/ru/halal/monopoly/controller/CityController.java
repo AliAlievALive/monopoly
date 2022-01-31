@@ -12,7 +12,7 @@ import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/ownership/city")
+@RequestMapping("/api/ownership/cities")
 @RequiredArgsConstructor
 public class CityController {
     private final CityService cityService;
