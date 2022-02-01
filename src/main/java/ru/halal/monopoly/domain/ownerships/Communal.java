@@ -43,4 +43,9 @@ public class Communal extends Ownership {
     public int hashCode() {
         return Objects.hash(id, name, cost, rentCost, depositCost, gamer);
     }
+
+    @Override
+    public int sale() {
+        return cost;
+    }
 }

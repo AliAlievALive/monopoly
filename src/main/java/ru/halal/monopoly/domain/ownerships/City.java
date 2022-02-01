@@ -3,6 +3,7 @@ package ru.halal.monopoly.domain.ownerships;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import ru.halal.monopoly.domain.Gamer;
+import ru.halal.monopoly.domain.ownerships.interfaces.CanBuildHome;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -15,7 +16,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Getter
 @Setter
 @ToString
-public class City extends Ownership{
+public class City extends Ownership implements CanBuildHome {
     @Id
     @GeneratedValue(strategy = AUTO)
     private int id;
@@ -44,5 +45,20 @@ public class City extends Ownership{
     @Override
     public int hashCode() {
         return Objects.hash(id, name, cost, color, rentCost, depositCost, gamer, homeCount);
+    }
+
+    @Override
+    public int sale() {
+        return cost;
+    }
+
+    @Override
+    public int addHome() {
+        return ++homeCount;
+    }
+
+    @Override
+    public int takeHome() {
+        return --homeCount;
     }
 }
