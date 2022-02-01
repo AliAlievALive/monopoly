@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
-import ru.halal.monopoly.domain.ownerships.Communal;
 import ru.halal.monopoly.domain.ownerships.Ownership;
 import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.repository.OwnershipRepo;
@@ -22,10 +21,7 @@ import static java.lang.Boolean.TRUE;
 @Service
 @Transactional
 @Slf4j
-public class OwnershipServiceImpl implements OwnershipService {
-    private final OwnershipRepo ownershipRepo;
-    private final GamerRepo gamerRepo;
-
+public record OwnershipServiceImpl(OwnershipRepo ownershipRepo, GamerRepo gamerRepo) implements OwnershipService {
     @Override
     public Ownership create(Ownership ownership) {
         return ownershipRepo.save(ownership);

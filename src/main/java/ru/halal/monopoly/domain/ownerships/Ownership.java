@@ -35,5 +35,8 @@ public abstract class Ownership implements CanSale {
     @JsonBackReference
     private Gamer gamer;
 
-
+    @Override
+    public int sale() {
+        return cost;
+    }
 }

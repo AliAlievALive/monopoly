@@ -20,7 +20,7 @@ public record AirportController(AirportService airportService) {
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Airport list limited 10")
+                        .message("Airport list limited 4")
                         .data(of("airport", airportService.getAirportList(4)))
                         .build()
         );

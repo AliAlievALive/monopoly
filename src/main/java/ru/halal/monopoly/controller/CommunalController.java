@@ -22,7 +22,7 @@ public record CommunalController(CommunalService communalService) {
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Communal list limited 10")
+                        .message("Communal list limited 2")
                         .data(of("communal", communalService.getCommunalList(2)))
                         .build()
         );
