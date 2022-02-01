@@ -1,6 +1,5 @@
 package ru.halal.monopoly.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Gamer;
@@ -13,9 +12,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/gamers")
-@RequiredArgsConstructor
-public class GamerController {
-    private final GamerService gamerService;
+public record GamerController(GamerService gamerService) {
 
     @GetMapping
     public ResponseEntity<Response> getGamers() {
@@ -32,15 +29,15 @@ public class GamerController {
 
     @GetMapping({"{id}"})
     public ResponseEntity<Response> getGamer(@PathVariable int id) {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timestamp(now())
-                            .statusCode(OK.value())
-                            .status(OK)
-                            .message("Gamer with " + id + " is found")
-                            .data(of("gamer", gamerService.getGamerById(id)))
-                            .build()
-            );
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("Gamer with " + id + " is found")
+                        .data(of("gamer", gamerService.getGamerById(id)))
+                        .build()
+        );
     }
 
     @PostMapping
@@ -69,7 +66,7 @@ public class GamerController {
         );
     }
 
-    @DeleteMapping ("{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Response> deleteGamer(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -82,30 +79,30 @@ public class GamerController {
         );
     }
 
-    @GetMapping({"/add_city_to_gamer/{cityId}/{gamerId}"})
-    public ResponseEntity<Response> addCityToGamer(@PathVariable int cityId, @PathVariable int gamerId) {
+    @GetMapping({"/add_own_to_gamer/{ownId}/{gamerId}"})
+    public ResponseEntity<Response> addOwnToGamer(@PathVariable int ownId, @PathVariable int gamerId) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("To gamer with id " + gamerId + " is added city with id " + cityId)
-                        .data(of("gamer", gamerService.addCityToGamer(cityId, gamerId)))
+                        .message("To gamer with id " + gamerId + " is added ownership with id " + ownId)
+                        .data(of("gamer", gamerService.addOwnToGamer(ownId, gamerId)))
                         .build()
         );
     }
 
-    @GetMapping({"/city_to_another_gamer/{fromId}/{toId}/{cityId}"})
-    public ResponseEntity<Response> cityToAnotherGamer(@PathVariable int fromId, @PathVariable int toId, @PathVariable int cityId) {
+    @GetMapping({"/give_to_another_gamer/{fromId}/{toId}/{ownId}"})
+    public ResponseEntity<Response> ownToAnotherGamer(@PathVariable int fromId, @PathVariable int toId, @PathVariable int ownId) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
                         .message("Gamer with id " + fromId +
-                                " give city with id " + cityId +
+                                " give own with id " + ownId +
                                 " to gamer with id " + toId)
-                        .data(of("gamer", gamerService.giveCityToAnotherGamer(fromId, toId, cityId)))
+                        .data(of("gamer", gamerService.giveOwnToAnotherGamer(fromId, toId, ownId)))
                         .build()
         );
     }

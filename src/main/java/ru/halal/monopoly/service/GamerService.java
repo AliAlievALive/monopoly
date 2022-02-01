@@ -1,9 +1,7 @@
 package ru.halal.monopoly.service;
 
 import ru.halal.monopoly.domain.Gamer;
-import ru.halal.monopoly.domain.ownerships.Airport;
-import ru.halal.monopoly.domain.ownerships.City;
-import ru.halal.monopoly.domain.ownerships.Communal;
+import ru.halal.monopoly.domain.ownerships.Ownership;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,17 +15,9 @@ public interface GamerService {
 
     Boolean moneyToGamerFromGamerName(String name1, int money, String name2);
 
-    Boolean addCityToGamer(int cityId, int gamerId);
+    Boolean addOwnToGamer(int cityId, int gamerId);
 
-    void addCommunalToGamer(Communal communal, int id);
-
-    void addAirportToGamer(Airport airport, int id);
-
-    List<City> getCities(Gamer gamer);
-
-    List<Communal> getCommunal(Gamer gamer);
-
-    List<Airport> getAirport(Gamer gamer);
+    List<Ownership> getOwn(Gamer gamer);
 
     int getMoney(String name);
 
@@ -39,5 +29,5 @@ public interface GamerService {
 
     Boolean delete(int id);
 
-    Boolean giveCityToAnotherGamer(int fromGamerId, int toGamerId, int cityId);
+    Boolean giveOwnToAnotherGamer(int fromGamerId, int toGamerId, int cityId);
 }

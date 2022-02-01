@@ -14,9 +14,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/api/ownership/cities")
 @RequiredArgsConstructor
-public class CityController {
-    private final CityService cityService;
-
+public record CityController(CityService cityService) {
     @PostMapping
     public ResponseEntity<Response> saveCity(@RequestBody City city) {
         return ResponseEntity.ok(
@@ -45,15 +43,15 @@ public class CityController {
 
     @GetMapping({"{id}"})
     public ResponseEntity<Response> getCity(@PathVariable int id) {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timestamp(now())
-                            .statusCode(OK.value())
-                            .status(OK)
-                            .message("City with " + id + " is found")
-                            .data(of("city", cityService.getCity(id)))
-                            .build()
-            );
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("City with " + id + " is found")
+                        .data(of("city", cityService.getCity(id)))
+                        .build()
+        );
     }
 
     @PutMapping
@@ -69,7 +67,7 @@ public class CityController {
         );
     }
 
-    @DeleteMapping ("{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Response> deleteCity(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

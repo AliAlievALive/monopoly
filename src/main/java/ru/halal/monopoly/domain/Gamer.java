@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import ru.halal.monopoly.domain.ownerships.Airport;
 import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.domain.ownerships.Communal;
+import ru.halal.monopoly.domain.ownerships.Ownership;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,73 +35,74 @@ public class Gamer {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "gamer")
     @ToString.Exclude
     @JsonManagedReference
-    private List<City> cities;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "gamer")
-    @ToString.Exclude
-    @JsonManagedReference
-    private List<Communal> communal;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "gamer")
-    @ToString.Exclude
-    @JsonManagedReference
-    private List<Airport> airports;
+    private List<Ownership> ownerships;
+//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "gamer")
+//    @ToString.Exclude
+//    @JsonManagedReference
+//    private List<Ownership> communal;
+//    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "gamer")
+//    @ToString.Exclude
+//    @JsonManagedReference
+//    private List<Ownership> airports;
 
-    public void addCity(City city) {
-        if (cities == null) {
-            cities = new ArrayList<>();
+    public void addOwn(Ownership ownership) {
+        if (ownerships == null) {
+            ownerships = new ArrayList<>();
         }
-        cities.add(city);
-        city.setGamer(this);
+        ownerships.add(ownership);
+        ownership.setGamer(this);
     }
 
-    public Boolean removeCity(City cityForRemove) {
-        int index = cities.indexOf(cityForRemove);
+    public Boolean removeOwn(Ownership ownershipForRemove) {
+        int index = ownerships.indexOf(ownershipForRemove);
         if (index >= 0) {
-            cities.remove(index);
+            ownerships.remove(index);
             return TRUE;
         }
         return FALSE;
     }
 
-    public void addCommunal(Communal communalForAdd) {
-        if (communal == null) {
-            communal = new ArrayList<>();
-        }
-        communal.add(communalForAdd);
-        communalForAdd.setGamer(this);
-    }
+//    public void addCommunal(Communal communalForAdd) {
+//        if (communal == null) {
+//            communal = new ArrayList<>();
+//        }
+//        communal.add(communalForAdd);
+//        communalForAdd.setGamer(this);
+//    }
+//
+//    public Boolean removeCommunal(Communal communalForRemove) {
+//        int index = communal.indexOf(communalForRemove);
+//        if (index >= 0) {
+//            communal.remove(index);
+//            return TRUE;
+//        }
+//        return FALSE;
+//    }
+//
+//    public void addAirport(Airport airport) {
+//        if (airports == null) {
+//            airports = new ArrayList<>();
+//        }
+//        airports.add(airport);
+//        airport.setGamer(this);
+//    }
+//
+//    public Boolean removeAirport(Airport airport) {
+//        int index = airports.indexOf(airport);
+//        if (index >= 0) {
+//            airports.remove(index);
+//            return TRUE;
+//        }
+//        return FALSE;
+//    }
 
-    public Boolean removeCommunal(Communal communalForRemove) {
-        int index = communal.indexOf(communalForRemove);
-        if (index >= 0) {
-            communal.remove(index);
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    public void addAirport(Airport airport) {
-        if (airports == null) {
-            airports = new ArrayList<>();
-        }
-        airports.add(airport);
-        airport.setGamer(this);
-    }
-
-    public Boolean removeAirport(Airport airport) {
-        int index = airports.indexOf(airport);
-        if (index >= 0) {
-            airports.remove(index);
-            return TRUE;
-        }
-        return FALSE;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Gamer)) return false;
         Gamer gamer = (Gamer) o;
-        return id == gamer.id && money == gamer.money && Objects.equals(name, gamer.name) && Objects.equals(cities, gamer.cities) && Objects.equals(communal, gamer.communal) && Objects.equals(airports, gamer.airports);
+        return getId() == gamer.getId() && getMoney() == gamer.getMoney() && getName().equals(gamer.getName()) && Objects.equals(getOwnerships(), gamer.getOwnerships());
     }
 
     @Override

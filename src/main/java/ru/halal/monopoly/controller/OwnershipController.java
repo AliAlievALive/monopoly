@@ -1,81 +1,79 @@
 package ru.halal.monopoly.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Response;
-import ru.halal.monopoly.domain.ownerships.Communal;
-import ru.halal.monopoly.service.CommunalService;
+import ru.halal.monopoly.domain.ownerships.Ownership;
+import ru.halal.monopoly.service.OwnershipService;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/api/ownership/communal")
-@RequiredArgsConstructor
-public record CommunalController(CommunalService communalService) {
+@RequestMapping("/api/ownership")
+public record OwnershipController(OwnershipService ownershipService) {
     @GetMapping
-    public ResponseEntity<Response> getCommunalList() {
+    public ResponseEntity<Response> getOwnerships() {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Communal list limited 10")
-                        .data(of("communal", communalService.getCommunalList(2)))
+                        .message("Ownership list limited 10")
+                        .data(of("ownership", ownershipService.getOwnerships(10)))
                         .build()
         );
     }
 
     @GetMapping({"{id}"})
-    public ResponseEntity<Response> getCommunal(@PathVariable int id) {
+    public ResponseEntity<Response> getOwnership(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Communal with " + id + " is found")
-                        .data(of("communal", communalService.getCommunal(id)))
+                        .message("Ownership with " + id + " is found")
+                        .data(of("ownership", ownershipService.getOwnership(id)))
                         .build()
         );
     }
 
     @PostMapping
-    public ResponseEntity<Response> saveCommunal(@RequestBody Communal communal) {
+    public ResponseEntity<Response> saveOwnership(@RequestBody Ownership ownership) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Communal " + communal.getName() + " is save")
-                        .data(of("communal", communalService.create(communal)))
+                        .message("Ownership " + ownership.getName() + " is save")
+                        .data(of("ownership", ownershipService.create(ownership)))
                         .build()
         );
     }
 
     @PutMapping
-    public ResponseEntity<Response> updateCommunal(@RequestBody Communal communal) {
+    public ResponseEntity<Response> updateOwnership(@RequestBody Ownership ownership) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Communal with id " + communal.getId() + " is updated")
-                        .data(of("communal", communalService.update(communal)))
+                        .message("Ownership with id " + ownership.getId() + " is updated")
+                        .data(of("ownership", ownershipService.update(ownership)))
                         .build()
         );
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Response> deleteCommunal(@PathVariable int id) {
+    public ResponseEntity<Response> deleteOwnership(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Communal with id " + id + " is deleted")
-                        .data(of("communal", communalService.delete(id)))
+                        .message("Ownership with id " + id + " is deleted")
+                        .data(of("ownership", ownershipService.delete(id)))
                         .build()
         );
     }
