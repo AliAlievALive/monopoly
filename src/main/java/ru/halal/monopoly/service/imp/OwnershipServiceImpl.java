@@ -1,7 +1,7 @@
 package ru.halal.monopoly.service.imp;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
@@ -17,11 +17,19 @@ import java.util.Optional;
 
 import static java.lang.Boolean.TRUE;
 
-@RequiredArgsConstructor
 @Service
 @Transactional
 @Slf4j
-public record OwnershipServiceImpl(OwnershipRepo ownershipRepo, GamerRepo gamerRepo) implements OwnershipService {
+public class OwnershipServiceImpl implements OwnershipService {
+    private final OwnershipRepo ownershipRepo;
+    private final GamerRepo gamerRepo;
+
+    @Autowired
+    public OwnershipServiceImpl(OwnershipRepo ownershipRepo, GamerRepo gamerRepo) {
+        this.ownershipRepo = ownershipRepo;
+        this.gamerRepo = gamerRepo;
+    }
+
     @Override
     public Ownership create(Ownership ownership) {
         return ownershipRepo.save(ownership);

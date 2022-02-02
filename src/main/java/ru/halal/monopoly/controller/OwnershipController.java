@@ -3,6 +3,7 @@ package ru.halal.monopoly.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Response;
+import ru.halal.monopoly.domain.ownerships.Communal;
 import ru.halal.monopoly.domain.ownerships.Ownership;
 import ru.halal.monopoly.service.OwnershipService;
 
@@ -41,6 +42,17 @@ public record OwnershipController(OwnershipService ownershipService) {
 
     @PostMapping
     public ResponseEntity<Response> saveOwnership(@RequestBody Ownership ownership) {
+        if (ownership instanceof Communal) {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timestamp(now())
+                            .statusCode(OK.value())
+                            .status(OK)
+                            .message("Ownership " + ownership.getName() + " is save")
+                            .data(of("ownership", ownershipService.create(ownership)))
+                            .build()
+            );
+        }
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())

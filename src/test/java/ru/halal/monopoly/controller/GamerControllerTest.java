@@ -42,7 +42,7 @@ public class GamerControllerTest {
     @Test
     void saveGamerTest() throws Exception {
         Gamer anton = new Gamer(0, "Anton", 15000,
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>());
         this.mockMvc.perform(post(URL)
                         .content(asJsonString(anton))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -54,7 +54,7 @@ public class GamerControllerTest {
     @Test
     void updateGamerTest() throws Exception {
         Gamer anton = new Gamer(0, "Anton", 15000,
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                new ArrayList<>());
         this.mockMvc.perform(post(URL)
                         .content(asJsonString(anton))
                         .contentType(MediaType.APPLICATION_JSON))
