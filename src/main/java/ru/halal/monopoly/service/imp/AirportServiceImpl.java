@@ -4,27 +4,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.ownerships.Airport;
-import ru.halal.monopoly.domain.ownerships.Ownership;
 import ru.halal.monopoly.repository.AirportRepo;
-import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.service.AirportService;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Boolean.TRUE;
 
-@RequiredArgsConstructor
+@Slf4j
 @Service
 @Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class AirportServiceImpl implements AirportService {
     private final AirportRepo airportRepo;
-    private final GamerRepo gamerRepo;
 
     @Override
     public Airport create(Airport airport) {

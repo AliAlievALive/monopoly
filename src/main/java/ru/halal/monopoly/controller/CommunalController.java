@@ -1,6 +1,5 @@
 package ru.halal.monopoly.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Response;
@@ -13,7 +12,6 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/ownership/communal")
-@RequiredArgsConstructor
 public record CommunalController(CommunalService communalService) {
     @GetMapping
     public ResponseEntity<Response> getCommunalList() {
@@ -49,7 +47,7 @@ public record CommunalController(CommunalService communalService) {
                         .statusCode(OK.value())
                         .status(OK)
                         .message("Communal " + communal.getName() + " is save")
-                        .data(of("communal", communalService.create(communal)))
+                        .data(of("communal", communalService.createOrUpdate(communal)))
                         .build()
         );
     }
