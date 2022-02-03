@@ -26,7 +26,7 @@ public record AirportController(AirportService airportService) {
         );
     }
 
-    @GetMapping({"{id}"})
+    @GetMapping("{id}")
     public ResponseEntity<Response> getAirport(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

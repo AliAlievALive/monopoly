@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.ownerships.Airport;
+import ru.halal.monopoly.domain.ownerships.Ownership;
 import ru.halal.monopoly.repository.AirportRepo;
 import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.service.AirportService;
@@ -60,18 +61,5 @@ public class AirportServiceImpl implements AirportService {
     public int airportToDeposit(Airport airport) {
         airport.setInDeposit(true);
         return airportRepo.findByName(airport.getName()).getDepositCost();
-    }
-
-    @Override
-    public void changeToAnotherGamer(Airport airport, Gamer gamer2) {
-        Gamer gamerOwner = airport.getGamer();
-        List<Airport> owner1Communal = gamerOwner.getAirports();
-        Optional<Airport> airportOpt = owner1Communal.stream().filter(air -> air == airport).findFirst();
-        if (airportOpt.isPresent()) {
-            gamer2.addAirport(airportOpt.get());
-            gamerOwner.getAirports().remove(airportOpt.get());
-            gamerRepo.save(gamerOwner);
-            gamerRepo.save(gamer2);
-        }
     }
 }
