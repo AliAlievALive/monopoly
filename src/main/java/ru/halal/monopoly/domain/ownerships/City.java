@@ -15,6 +15,10 @@ public class City extends Ownership implements CanBuildHome {
     private EColors color;
     private int homeCost;
     private int homeCount;
+    private int oneCityCost;
+    private int twoCityCost;
+    private int threeCityCost;
+    private int payToStayOnCity = 0;
 
     @Override
     public int addHome() {
@@ -24,5 +28,21 @@ public class City extends Ownership implements CanBuildHome {
     @Override
     public int takeHome() {
         return --homeCount;
+    }
+
+    @Override
+    public int increasePay() {
+        if (homeCount == 1) {
+            return oneCityCost;
+        } else if (homeCount == 2) {
+            return twoCityCost;
+        } else {
+            return threeCityCost;
+        }
+    }
+
+    @Override
+    public int decreasePay() {
+        return 0;
     }
 }

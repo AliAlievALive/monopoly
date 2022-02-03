@@ -1,6 +1,5 @@
 package ru.halal.monopoly.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Response;
@@ -13,7 +12,6 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/ownership/cities")
-@RequiredArgsConstructor
 public record CityController(CityService cityService) {
     @PostMapping
     public ResponseEntity<Response> saveCity(@RequestBody City city) {
