@@ -1,65 +1,40 @@
 version: "3.9"
 
 services:
-#  monopoly:
-#    networks:
-#      - db
-#    container_name: monopoly
-#    image: alialiev/monopoly
-#    build: .
-#    depends_on:
-#      - monopoly_db
-#      - test_db
-#    ports:
-#      - '8081:8080'
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-
-  phpmyadmin:
-    networks:
-      - db
-    image: phpmyadmin
-    restart: always
-    ports:
-      - '8085:80'
-    environment:
-      - PMA_ARBITRARY=1
-
   monopoly_db:
-    networks:
-      - db
-    container_name: monopoly-db
-    image: mysql
-    volumes:
-      - monopoly-db:/var/lib/mysql
-    restart: on-failure
+    container_name: postgres
+    image: postgres
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: monopoly
-      MYSQL_PASSWORD: root
+      POSTGRES_USER: alim
+      POSTGRES_PASSWORD: aitmim
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres:/var/lib/postgresql/data/pgdata
     ports:
-      - '3310:3306'
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: always
 
-#  test_db:
-#    networks:
-#      - db
-#    container_name: monopoly-db-test
-#    image: mysql
-#    volumes:
-#      - monopoly-db-test:/var/lib/mysql
-#    restart: on-failure
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root
-#      MYSQL_DATABASE: monopoly_test
-#      MYSQL_PASSWORD: root
-#    ports:
-#      - '3320:3306'
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: always
 
 networks:
-  db:
+  postgres:
     driver: bridge
 
 volumes:
-  phpmyadmin:
-  monopoly-db:
-#  monopoly-db-test:
+  postgres:
+  pgadmin:
