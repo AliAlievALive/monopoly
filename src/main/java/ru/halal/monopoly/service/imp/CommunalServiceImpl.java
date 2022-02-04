@@ -4,36 +4,30 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.halal.monopoly.domain.Gamer;
-import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.domain.ownerships.Communal;
 import ru.halal.monopoly.repository.CommunalRepo;
-import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.service.CommunalService;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 import static java.lang.Boolean.TRUE;
 
-@RequiredArgsConstructor
+@Slf4j
 @Service
 @Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class CommunalServiceImpl implements CommunalService {
     private final CommunalRepo communalRepo;
-    private final GamerRepo gamerRepo;
 
     @Override
-    public Communal create(Communal communal) {
+    public Communal createOrUpdate(Communal communal) {
         return communalRepo.save(communal);
     }
 
     @Override
     public Communal update(Communal communal) {
-        return communalRepo.saveAndFlush(communal);
+        return communalRepo.save(communal);
     }
 
     @Override
@@ -43,12 +37,7 @@ public class CommunalServiceImpl implements CommunalService {
 
     @Override
     public Communal getCommunal(int id) {
-        Communal communal = null;
-        Optional<Communal> optionalCommunal = communalRepo.findById(id);
-        if (optionalCommunal.isPresent()) {
-            communal = optionalCommunal.get();
-        }
-        return communal;
+        return communalRepo.getById(id);
     }
 
     @Override
@@ -60,19 +49,8 @@ public class CommunalServiceImpl implements CommunalService {
     @Override
     public int communalToDeposit(Communal communal) {
         communal.setInDeposit(true);
-        return communalRepo.findByName(communal.getName()).getDepositCost();
-    }
-
-    @Override
-    public void changeToAnotherGamer(Communal communal, Gamer gamer2) {
-        Gamer gamerOwner = communal.getGamer();
-        List<Communal> owner1Communal = gamerOwner.getCommunal();
-        Optional<Communal> commun = owner1Communal.stream().filter(comm -> comm == communal).findFirst();
-        if (commun.isPresent()) {
-            gamer2.addCommunal(commun.get());
-            gamerOwner.getCommunal().remove(commun.get());
-            gamerRepo.save(gamerOwner);
-            gamerRepo.save(gamer2);
-        }
+        return communalRepo.findById(communal.getId()).get().getDepositCost();
     }
 }
+
+

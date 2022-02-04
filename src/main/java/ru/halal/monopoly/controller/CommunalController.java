@@ -1,6 +1,5 @@
 package ru.halal.monopoly.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Response;
@@ -13,10 +12,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/ownership/communal")
-@RequiredArgsConstructor
-public class CommunalController {
-    private final CommunalService communalService;
-
+public record CommunalController(CommunalService communalService) {
     @GetMapping
     public ResponseEntity<Response> getCommunalList() {
         return ResponseEntity.ok(
@@ -24,7 +20,7 @@ public class CommunalController {
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("Communal list limited 10")
+                        .message("Communal list limited 2")
                         .data(of("communal", communalService.getCommunalList(2)))
                         .build()
         );
@@ -32,15 +28,15 @@ public class CommunalController {
 
     @GetMapping({"{id}"})
     public ResponseEntity<Response> getCommunal(@PathVariable int id) {
-            return ResponseEntity.ok(
-                    Response.builder()
-                            .timestamp(now())
-                            .statusCode(OK.value())
-                            .status(OK)
-                            .message("Communal with " + id + " is found")
-                            .data(of("communal", communalService.getCommunal(id)))
-                            .build()
-            );
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("Communal with " + id + " is found")
+                        .data(of("communal", communalService.getCommunal(id)))
+                        .build()
+        );
     }
 
     @PostMapping
@@ -51,7 +47,7 @@ public class CommunalController {
                         .statusCode(OK.value())
                         .status(OK)
                         .message("Communal " + communal.getName() + " is save")
-                        .data(of("communal", communalService.create(communal)))
+                        .data(of("communal", communalService.createOrUpdate(communal)))
                         .build()
         );
     }
@@ -69,7 +65,7 @@ public class CommunalController {
         );
     }
 
-    @DeleteMapping ("{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Response> deleteCommunal(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()

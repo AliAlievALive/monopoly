@@ -28,7 +28,7 @@ class GamerServiceImplTest {
     @Test
     void getGamer() {
         int id = 13;
-        Optional<Gamer> gamerOptional = Optional.of(new Gamer(13, "Alim", 2660, null, null, null));
+        Optional<Gamer> gamerOptional = Optional.of(new Gamer(13, "Alim", 2660, null));
         Mockito.doReturn(gamerOptional)
                 .when(gamerRepo)
                 .findById(id);
