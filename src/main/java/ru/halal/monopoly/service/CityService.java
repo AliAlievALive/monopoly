@@ -15,11 +15,11 @@ public interface CityService {
 
     Boolean delete(int id);
 
-    int cityToDeposit(int id);
+//    int cityToDeposit(int id);
 
-    Boolean cityFromDeposit(int id);
+//    Boolean cityFromDeposit(int id);
 
-    Boolean addHome(int id);
-
-    Boolean soldHome(int id);
+//    Boolean addHome(int id);
+//
+//    Boolean soldHome(int id);
 }

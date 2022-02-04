@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.Response;
+import ru.halal.monopoly.domain.ownerships.Ownership;
 import ru.halal.monopoly.service.GamerService;
 
 import static java.time.LocalDateTime.now;
@@ -79,15 +80,28 @@ public record GamerController(GamerService gamerService) {
         );
     }
 
-    @GetMapping({"/add_own_to_gamer/{ownId}/{gamerId}"})
-    public ResponseEntity<Response> addOwnToGamer(@PathVariable int ownId, @PathVariable int gamerId) {
+    @PostMapping({"/add_own_to_gamer/{gamerId}"})
+    public ResponseEntity<Response> addOwnToGamer(@RequestBody Ownership ownership, @PathVariable int gamerId) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
-                        .message("To gamer with id " + gamerId + " is added ownership with id " + ownId)
-                        .data(of("gamer", gamerService.addOwnToGamer(ownId, gamerId)))
+                        .message("To gamer with id " + gamerId + " is added ownership with id " + ownership)
+                        .data(of("gamer", gamerService.addOwnToGamer(ownership, gamerId)))
+                        .build()
+        );
+    }
+
+    @PostMapping({"/gamer_owns"})
+    public ResponseEntity<Response> gamerOwns(@RequestBody Gamer gamer) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(now())
+                        .statusCode(OK.value())
+                        .status(OK)
+                        .message("Gamer " + gamer.getName() + " have ownerships")
+                        .data(of("gamer", gamerService.getOwns(gamer)))
                         .build()
         );
     }

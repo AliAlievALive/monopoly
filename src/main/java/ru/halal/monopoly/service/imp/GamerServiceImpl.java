@@ -5,16 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
-import ru.halal.monopoly.domain.ownerships.Airport;
-import ru.halal.monopoly.domain.ownerships.City;
-import ru.halal.monopoly.domain.ownerships.Communal;
-import ru.halal.monopoly.domain.ownerships.Ownership;
+import ru.halal.monopoly.domain.ownerships.*;
 import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.repository.OwnershipRepo;
 import ru.halal.monopoly.service.GamerService;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -61,22 +57,26 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public Boolean addOwnToGamer(int ownershipId, int gamerId) {
+    public Boolean addOwnToGamer(Ownership ownership, int gamerId) {
         Optional<Gamer> gamerOptional = gamerRepo.findById(gamerId);
-        Optional<Ownership> cityOptional = ownershipRepo.findById(ownershipId);
         Gamer gamer = gamerOptional.get();
-        Ownership ownership = cityOptional.get();
-        gamer.addOwn(ownership);
+        if (ownership instanceof City) {
+            gamer.getOwnership().getCities().add((City) ownership);
+        } else if (ownership instanceof Airport) {
+            gamer.getOwnership().getAirports().add((Airport) ownership);
+        } else if (ownership instanceof Communal) {
+            gamer.getOwnership().getCommunals().add((Communal) ownership);
+        }
         gamerRepo.save(gamer);
         return TRUE;
     }
 
     @Override
-    public List<Ownership> getOwn(Gamer gamer) {
-        List<Ownership> ownerships = new ArrayList<>();
-        Optional<Gamer> citiesOptional = gamerRepo.findById(gamer.getId());
-        if (citiesOptional.isPresent()) {
-            ownerships = citiesOptional.get().getOwnerships();
+    public GamerOwns getOwns(Gamer gamer) {
+        GamerOwns ownerships = new GamerOwns();
+        Optional<Gamer> optionalGamer = gamerRepo.findById(gamer.getId());
+        if (optionalGamer.isPresent()) {
+            ownerships = optionalGamer.get().getOwnership();
         }
         return ownerships;
     }
@@ -102,17 +102,34 @@ public class GamerServiceImpl implements GamerService {
         Optional<Gamer> optionalToGamer = gamerRepo.findById(toId);
         Gamer fromGamer = optionalFromGamer.get();
         Gamer toGamer = optionalToGamer.get();
-        Optional<Ownership> optionalOwn = fromGamer.getOwnerships().stream()
-                .filter(ownership -> ownership.getId() == ownId)
-                .findFirst();
-        Ownership ownership = optionalOwn.get();
-        if (fromGamer.removeOwn(ownership)) {
-            toGamer.addOwn(ownership);
+        GamerOwns gamerOwns = fromGamer.getOwnership();
+        Ownership ownership = findOwnership(ownId, gamerOwns);
+        if (gamerOwns.removeOwn(ownership)) {
+            toGamer.getOwnership().addOwn(ownership);
             gamerRepo.save(fromGamer);
             gamerRepo.save(toGamer);
             return TRUE;
         }
         return FALSE;
+    }
+
+    private Ownership findOwnership(int ownId, GamerOwns gamerOwns) {
+        Optional<Airport> optionalAirport = gamerOwns.getAirports().stream()
+                .filter(airport -> airport.getId() == ownId)
+                .findAny();
+
+        Optional<Communal> optionalCommunal = gamerOwns.getCommunals().stream()
+                .filter(communal -> communal.getId() == ownId)
+                .findAny();
+
+        Optional<City> optionalCity = gamerOwns.getCities().stream()
+                .filter(city -> city.getId() == ownId)
+                .findAny();
+        Ownership ownership = optionalAirport.isPresent() ?
+                optionalAirport.get() :
+                    (optionalCity.isPresent() ?
+                        optionalCity.get() : optionalCommunal.get());
+        return ownership;
     }
 
     @Override

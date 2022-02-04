@@ -1,10 +1,10 @@
 package ru.halal.monopoly.service;
 
 import ru.halal.monopoly.domain.Gamer;
+import ru.halal.monopoly.domain.ownerships.GamerOwns;
 import ru.halal.monopoly.domain.ownerships.Ownership;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface GamerService {
     Gamer create(Gamer gamer);
@@ -15,9 +15,9 @@ public interface GamerService {
 
     Boolean moneyToGamerFromGamerName(String name1, int money, String name2);
 
-    Boolean addOwnToGamer(int cityId, int gamerId);
+    Boolean addOwnToGamer(Ownership ownership, int gamerId);
 
-    List<Ownership> getOwn(Gamer gamer);
+    GamerOwns getOwns(Gamer gamer);
 
     int getMoney(String name);
 

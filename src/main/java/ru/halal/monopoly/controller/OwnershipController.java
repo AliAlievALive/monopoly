@@ -3,8 +3,10 @@ package ru.halal.monopoly.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Response;
-import ru.halal.monopoly.domain.ownerships.Communal;
-import ru.halal.monopoly.domain.ownerships.Ownership;
+import ru.halal.monopoly.domain.ownerships.*;
+import ru.halal.monopoly.service.AirportService;
+import ru.halal.monopoly.service.CityService;
+import ru.halal.monopoly.service.CommunalService;
 import ru.halal.monopoly.service.OwnershipService;
 
 import static java.time.LocalDateTime.now;
@@ -13,7 +15,10 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/ownership")
-public record OwnershipController(OwnershipService ownershipService) {
+public record OwnershipController(CityService cityService,
+                                  CommunalService communalService,
+                                  AirportService airportService,
+                                  OwnershipService ownershipService) {
     @GetMapping
     public ResponseEntity<Response> getOwnerships() {
         return ResponseEntity.ok(
@@ -27,7 +32,7 @@ public record OwnershipController(OwnershipService ownershipService) {
         );
     }
 
-    @GetMapping({"{id}"})
+    @GetMapping("/{id}")
     public ResponseEntity<Response> getOwnership(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -41,43 +46,32 @@ public record OwnershipController(OwnershipService ownershipService) {
     }
 
     @PostMapping
-    public ResponseEntity<Response> saveOwnership(@RequestBody Ownership ownership) {
-        if (ownership instanceof Communal) {
+    public <T extends Ownership> ResponseEntity<Response> saveOwnership(@RequestBody T ownership) {
             return ResponseEntity.ok(
                     Response.builder()
                             .timestamp(now())
                             .statusCode(OK.value())
                             .status(OK)
                             .message("Ownership " + ownership.getName() + " is save")
-                            .data(of("ownership", ownershipService.create(ownership)))
+                            .data(of("ownership", ownershipService().createOrUpdate(ownership)))
                             .build()
             );
-        }
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Ownership " + ownership.getName() + " is save")
-                        .data(of("ownership", ownershipService.create(ownership)))
-                        .build()
-        );
     }
 
     @PutMapping
-    public ResponseEntity<Response> updateOwnership(@RequestBody Ownership ownership) {
+    public <T extends Ownership> ResponseEntity<Response> updateOwnership(@RequestBody T ownership) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
                         .message("Ownership with id " + ownership.getId() + " is updated")
-                        .data(of("ownership", ownershipService.update(ownership)))
+                        .data(of("ownership", ownershipService.createOrUpdate(ownership)))
                         .build()
         );
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteOwnership(@PathVariable int id) {
         return ResponseEntity.ok(
                 Response.builder()
