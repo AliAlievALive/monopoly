@@ -51,10 +51,4 @@ public class AirportServiceImpl implements AirportService {
         airportRepo.deleteById(id);
         return TRUE;
     }
-
-    @Override
-    public int airportToDeposit(Airport airport) {
-        airport.setInDeposit(true);
-        return airportRepo.findByName(airport.getName()).getDepositCost();
-    }
 }

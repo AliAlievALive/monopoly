@@ -10,8 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.halal.monopoly.domain.Gamer;
-
-import java.util.ArrayList;
+import ru.halal.monopoly.domain.GamerOwns;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,7 +41,7 @@ public class GamerControllerTest {
     @Test
     void saveGamerTest() throws Exception {
         Gamer anton = new Gamer(0, "Anton", 15000,
-                new ArrayList<>());
+                new GamerOwns());
         this.mockMvc.perform(post(URL)
                         .content(asJsonString(anton))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -54,7 +53,7 @@ public class GamerControllerTest {
     @Test
     void updateGamerTest() throws Exception {
         Gamer anton = new Gamer(0, "Anton", 15000,
-                new ArrayList<>());
+                new GamerOwns());
         this.mockMvc.perform(post(URL)
                         .content(asJsonString(anton))
                         .contentType(MediaType.APPLICATION_JSON))

@@ -5,22 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
-import ru.halal.monopoly.domain.ownerships.Airport;
-import ru.halal.monopoly.domain.ownerships.City;
-import ru.halal.monopoly.domain.ownerships.Communal;
-import ru.halal.monopoly.domain.ownerships.Ownership;
-import ru.halal.monopoly.repository.GamerRepo;
-import ru.halal.monopoly.repository.OwnershipRepo;
+import ru.halal.monopoly.domain.GamerOwns;
+import ru.halal.monopoly.domain.ownerships.*;
+import ru.halal.monopoly.repository.*;
 import ru.halal.monopoly.service.GamerService;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static ru.halal.monopoly.domain.ownerships.EType.*;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +24,9 @@ import static java.lang.Boolean.TRUE;
 @Slf4j
 public class GamerServiceImpl implements GamerService {
     private final GamerRepo gamerRepo;
+    private final CityRepo cityRepo;
+    private final CommunalRepo communalRepo;
+    private final AirportRepo airportRepo;
     private final OwnershipRepo ownershipRepo;
 
     @Override
@@ -61,24 +60,29 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public Boolean addOwnToGamer(int ownershipId, int gamerId) {
-        Optional<Gamer> gamerOptional = gamerRepo.findById(gamerId);
-        Optional<Ownership> cityOptional = ownershipRepo.findById(ownershipId);
-        Gamer gamer = gamerOptional.get();
-        Ownership ownership = cityOptional.get();
-        gamer.addOwn(ownership);
-        gamerRepo.save(gamer);
+    public Boolean addOwnToGamer(int ownershipId, int gamerId, TypeWrapper type) {
+        Gamer gamerRepoById = gamerRepo.getById(gamerId);
+        GamerOwns ownership = gamerRepoById.getOwnership();
+        if (ownership == null) {
+            ownership = new GamerOwns();
+            ownership.setGamer(gamerRepoById);
+        }
+        if (type.getType().equals(CITY)) {
+            ownership.addCityToGamer(cityRepo.getById(ownershipId));
+        }
+        if (type.getType().equals(COMMUNAL)) {
+            ownership.addCommunalToGamer(communalRepo.getById(ownershipId));
+        }
+        if (type.getType().equals(AIRPORT)) {
+            ownership.addAirportToGamer(airportRepo.getById(ownershipId));
+        }
+        gamerRepoById.setOwnership(ownershipRepo.save(ownership));
         return TRUE;
     }
 
     @Override
-    public List<Ownership> getOwn(Gamer gamer) {
-        List<Ownership> ownerships = new ArrayList<>();
-        Optional<Gamer> citiesOptional = gamerRepo.findById(gamer.getId());
-        if (citiesOptional.isPresent()) {
-            ownerships = citiesOptional.get().getOwnerships();
-        }
-        return ownerships;
+    public GamerOwns getOwn(Gamer gamer) {
+        return gamerRepo.findById(gamer.getId()).get().getOwnership();
     }
 
     @Override
@@ -97,22 +101,52 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
-    public Boolean giveOwnToAnotherGamer(int fromId, int toId, int ownId) {
-        Optional<Gamer> optionalFromGamer = gamerRepo.findById(fromId);
-        Optional<Gamer> optionalToGamer = gamerRepo.findById(toId);
-        Gamer fromGamer = optionalFromGamer.get();
-        Gamer toGamer = optionalToGamer.get();
-        Optional<Ownership> optionalOwn = fromGamer.getOwnerships().stream()
-                .filter(ownership -> ownership.getId() == ownId)
-                .findFirst();
-        Ownership ownership = optionalOwn.get();
-        if (fromGamer.removeOwn(ownership)) {
-            toGamer.addOwn(ownership);
-            gamerRepo.save(fromGamer);
-            gamerRepo.save(toGamer);
+    public Boolean giveOwnToAnotherGamer(TypeWrapper type, int fromId, int toId, int ownId) {
+        GamerOwns fromOwn = gamerRepo.findById(fromId).get().getOwnership();
+        GamerOwns toOwn = gamerRepo.findById(toId).get().getOwnership();
+
+        Object own = findOwn(type, ownId, fromOwn, toOwn);
+        if (own instanceof City) {
+            ((City) own).setGamerOwns(toOwn);
+            cityRepo.save((City) own);
+            return TRUE;
+        }
+        if (own instanceof Communal) {
+            ((Communal) own).setGamerOwns(toOwn);
+            communalRepo.save((Communal) own);
+            return TRUE;
+        }
+        if (own instanceof Airport) {
+            ((Airport) own).setGamerOwns(toOwn);
+            airportRepo.save((Airport) own);
             return TRUE;
         }
         return FALSE;
+    }
+
+    private Object findOwn(TypeWrapper type, int ownId, GamerOwns fromGamer, GamerOwns toGamer) {
+        if (type.getType().equals(CITY)) {
+            Optional<City> cityOptional = fromGamer.getCities().stream()
+                    .filter(city -> city.getId() == ownId).findAny();
+            if (cityOptional.isPresent()) {
+                return cityOptional.get();
+            }
+        }
+        if (type.getType().equals(COMMUNAL)) {
+            Optional<Communal> communalOptional = fromGamer.getCommunals().stream()
+                    .filter(communal -> communal.getId() == ownId).findAny();
+            if (communalOptional.isPresent()) {
+                return communalOptional.get();
+            }
+        }
+        if (type.getType().equals(AIRPORT)) {
+            Optional<Airport> airportOptional = fromGamer.getAirports().stream()
+                    .filter(airport -> airport.getId() == ownId).findAny();
+            if (airportOptional.isPresent()) {
+                return airportOptional.get();
+            }
+        }
+        return null;
     }
 
     @Override

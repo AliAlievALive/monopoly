@@ -14,7 +14,4 @@ public interface AirportService {
     Airport getAirport(int id);
 
     Boolean delete(int id);
-
-    int airportToDeposit(Airport airport);
-
 }

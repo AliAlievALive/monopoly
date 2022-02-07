@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.Response;
+import ru.halal.monopoly.domain.ownerships.EType;
+import ru.halal.monopoly.domain.ownerships.TypeWrapper;
 import ru.halal.monopoly.service.GamerService;
 
 import static java.time.LocalDateTime.now;
@@ -79,21 +81,23 @@ public record GamerController(GamerService gamerService) {
         );
     }
 
-    @GetMapping({"/add_own_to_gamer/{ownId}/{gamerId}"})
-    public ResponseEntity<Response> addOwnToGamer(@PathVariable int ownId, @PathVariable int gamerId) {
+    @PostMapping({"/add_own_to_gamer/{ownId}/{gamerId}"})
+    public ResponseEntity<Response> addOwnToGamer(@PathVariable int ownId,
+                                                  @PathVariable int gamerId,
+                                                  @RequestBody TypeWrapper type) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
                         .statusCode(OK.value())
                         .status(OK)
                         .message("To gamer with id " + gamerId + " is added ownership with id " + ownId)
-                        .data(of("gamer", gamerService.addOwnToGamer(ownId, gamerId)))
+                        .data(of("gamer", gamerService.addOwnToGamer(ownId, gamerId, type)))
                         .build()
         );
     }
 
-    @GetMapping({"/give_to_another_gamer/{fromId}/{toId}/{ownId}"})
-    public ResponseEntity<Response> ownToAnotherGamer(@PathVariable int fromId, @PathVariable int toId, @PathVariable int ownId) {
+    @PostMapping({"/give_to_another_gamer/{fromId}/{toId}/{ownId}"})
+    public ResponseEntity<Response> ownToAnotherGamer(@RequestBody TypeWrapper type, @PathVariable int fromId, @PathVariable int toId, @PathVariable int ownId) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timestamp(now())
@@ -102,7 +106,7 @@ public record GamerController(GamerService gamerService) {
                         .message("Gamer with id " + fromId +
                                 " give own with id " + ownId +
                                 " to gamer with id " + toId)
-                        .data(of("gamer", gamerService.giveOwnToAnotherGamer(fromId, toId, ownId)))
+                        .data(of("gamer", gamerService.giveOwnToAnotherGamer(type, fromId, toId, ownId)))
                         .build()
         );
     }

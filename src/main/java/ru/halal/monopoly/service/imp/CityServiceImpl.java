@@ -34,72 +34,72 @@ public class CityServiceImpl implements CityService {
         return cityRepo.saveAndFlush(city);
     }
 
-    @Override
-    public int cityToDeposit(int id) {
-        int depositMoney = 0;
-        Optional<City> optionalCity = cityRepo.findById(id);
-        if (optionalCity.isPresent()) {
-            City city = optionalCity.get();
-            if (!city.isInDeposit()) {
-                city.setInDeposit(true);
-                depositMoney = city.getDepositCost();
-                Gamer gamer = city.getGamer();
-                gamer.setMoney(gamer.getMoney() + depositMoney);
-                cityRepo.save(city);
-            }
-        }
-        return depositMoney;
-    }
+//    @Override
+//    public int cityToDeposit(int id) {
+//        int depositMoney = 0;
+//        Optional<City> optionalCity = cityRepo.findById(id);
+//        if (optionalCity.isPresent()) {
+//            City city = optionalCity.get();
+//            if (!city.isInDeposit()) {
+//                city.setInDeposit(true);
+//                depositMoney = city.getDepositCost();
+//                Gamer gamer = city.getGamer();
+//                gamer.setMoney(gamer.getMoney() + depositMoney);
+//                cityRepo.save(city);
+//            }
+//        }
+//        return depositMoney;
+//    }
 
-    @Override
-    public Boolean cityFromDeposit(int id) {
-        Optional<City> optionalCity = cityRepo.findById(id);
-        if (optionalCity.isPresent()) {
-            City city = optionalCity.get();
-            Gamer gamer = optionalCity.get().getGamer();
-            int gamerMoney = gamer.getMoney();
-            int depositCost = city.getDepositCost();
-            if (gamerMoney >= depositCost && city.isInDeposit()) {
-                gamer.setMoney(gamerMoney - depositCost);
-                city.setInDeposit(false);
-                cityRepo.save(city);
-                return TRUE;
-            }
-        }
-        return FALSE;
-    }
+//    @Override
+//    public Boolean cityFromDeposit(int id) {
+//        Optional<City> optionalCity = cityRepo.findById(id);
+//        if (optionalCity.isPresent()) {
+//            City city = optionalCity.get();
+//            Gamer gamer = optionalCity.get().getGamer();
+//            int gamerMoney = gamer.getMoney();
+//            int depositCost = city.getDepositCost();
+//            if (gamerMoney >= depositCost && city.isInDeposit()) {
+//                gamer.setMoney(gamerMoney - depositCost);
+//                city.setInDeposit(false);
+//                cityRepo.save(city);
+//                return TRUE;
+//            }
+//        }
+//        return FALSE;
+//    }
 
-    @Override
-    public Boolean addHome(int id) {
-        Optional<City> optionalCity = cityRepo.findById(id);
-        City city = optionalCity.get();
-        Gamer gamer = optionalCity.get().getGamer();
-        int gamerMoney = gamer.getMoney();
-        int homeCost = city.getHomeCost();
-        if (gamerMoney >= homeCost && !city.isInDeposit() && city.getHomeCount() < MAX_HOME_COUNT) {
-            gamer.setMoney(gamerMoney - homeCost);
-            city.setHomeCount(city.getHomeCount() + 1);
-            cityRepo.save(city);
-            return TRUE;
-        }
-        return FALSE;
-    }
+//    @Override
+//    public Boolean addHome(int id) {
+//        Optional<City> optionalCity = cityRepo.findById(id);
+//        City city = optionalCity.get();
+//        Gamer gamer = optionalCity.get().getGamer();
+//        int gamerMoney = gamer.getMoney();
+//        int homeCost = city.getHomeCost();
+//        if (gamerMoney >= homeCost && !city.isInDeposit() && city.getHomeCount() < MAX_HOME_COUNT) {
+//            gamer.setMoney(gamerMoney - homeCost);
+//            city.setHomeCount(city.getHomeCount() + 1);
+//            cityRepo.save(city);
+//            return TRUE;
+//        }
+//        return FALSE;
+//    }
 
-    @Override
-    public Boolean soldHome(int id) {
-        Optional<City> optionalCity = cityRepo.findById(id);
-        City city = optionalCity.get();
-        Gamer gamer = optionalCity.get().getGamer();
-        int gamerMoney = gamer.getMoney();
-        int homeCost = city.getHomeCost();
-        if (!city.isInDeposit() && city.getHomeCount() > 0) {
-            gamer.setMoney(gamerMoney + homeCost);
-            city.setHomeCount(city.getHomeCount() - 1);
-            cityRepo.save(city);
-            return TRUE;
-        }
-        return FALSE;
-    }
+//    @Override
+//    public Boolean soldHome(int id) {
+//        Optional<City> optionalCity = cityRepo.findById(id);
+//        City city = optionalCity.get();
+//        Gamer gamer = optionalCity.get().getGamer();
+//        int gamerMoney = gamer.getMoney();
+//        int homeCost = city.getHomeCost();
+//        if (!city.isInDeposit() && city.getHomeCount() > 0) {
+//            gamer.setMoney(gamerMoney + homeCost);
+//            city.setHomeCount(city.getHomeCount() - 1);
+//            cityRepo.save(city);
+//            return TRUE;
+//        }
+//        return FALSE;
+//    }
 
     @Override
     public List<City> getCities(int limit) {
