@@ -105,7 +105,7 @@ public class GamerServiceImpl implements GamerService {
         GamerOwns fromOwn = gamerRepo.findById(fromId).get().getOwnership();
         GamerOwns toOwn = gamerRepo.findById(toId).get().getOwnership();
 
-        Object own = findOwn(type, ownId, fromOwn, toOwn);
+        Object own = findOwn(type, ownId, fromOwn);
         if (own instanceof City) {
             ((City) own).setGamerOwns(toOwn);
             cityRepo.save((City) own);
@@ -124,7 +124,7 @@ public class GamerServiceImpl implements GamerService {
         return FALSE;
     }
 
-    private Object findOwn(TypeWrapper type, int ownId, GamerOwns fromGamer, GamerOwns toGamer) {
+    private Object findOwn(TypeWrapper type, int ownId, GamerOwns fromGamer) {
         if (type.getType().equals(CITY)) {
             Optional<City> cityOptional = fromGamer.getCities().stream()
                     .filter(city -> city.getId() == ownId).findAny();
