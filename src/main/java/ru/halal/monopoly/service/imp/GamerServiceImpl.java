@@ -2,6 +2,7 @@ package ru.halal.monopoly.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
@@ -41,8 +42,7 @@ public class GamerServiceImpl implements GamerService {
 
     @Override
     public int changeMoneyCounts(int id, int money) {
-        Optional<Gamer> gamerOptional = gamerRepo.findById(id);
-        Gamer gamer = gamerOptional.get();
+        Gamer gamer = getGamerById(id);
         gamer.setMoney(gamer.getMoney() + money);
         gamerRepo.save(gamer);
         return gamer.getMoney();
@@ -82,7 +82,7 @@ public class GamerServiceImpl implements GamerService {
 
     @Override
     public GamerOwns getOwn(Gamer gamer) {
-        return gamerRepo.findById(gamer.getId()).get().getOwnership();
+        return getGamerById(gamer.getId()).getOwnership();
     }
 
     @Override
@@ -96,14 +96,15 @@ public class GamerServiceImpl implements GamerService {
     }
 
     @Override
+    @Cacheable("gamers")
     public Collection<Gamer> getGamers(int limit) {
         return gamerRepo.findAll(PageRequest.of(0, limit)).toList();
     }
 
     @Override
     public Boolean giveOwnToAnotherGamer(TypeWrapper type, int fromId, int toId, int ownId) {
-        GamerOwns fromOwn = gamerRepo.findById(fromId).get().getOwnership();
-        GamerOwns toOwn = gamerRepo.findById(toId).get().getOwnership();
+        GamerOwns fromOwn = getGamerById(fromId).getOwnership();
+        GamerOwns toOwn = getGamerById(toId).getOwnership();
 
         Object own = findOwn(type, ownId, fromOwn);
         if (own instanceof City) {
@@ -126,37 +127,25 @@ public class GamerServiceImpl implements GamerService {
 
     private Object findOwn(TypeWrapper type, int ownId, GamerOwns fromGamer) {
         if (type.getType().equals(CITY)) {
-            Optional<City> cityOptional = fromGamer.getCities().stream()
+            return fromGamer.getCities().stream()
                     .filter(city -> city.getId() == ownId).findAny();
-            if (cityOptional.isPresent()) {
-                return cityOptional.get();
-            }
         }
         if (type.getType().equals(COMMUNAL)) {
-            Optional<Communal> communalOptional = fromGamer.getCommunals().stream()
+            return fromGamer.getCommunals().stream()
                     .filter(communal -> communal.getId() == ownId).findAny();
-            if (communalOptional.isPresent()) {
-                return communalOptional.get();
-            }
         }
         if (type.getType().equals(AIRPORT)) {
-            Optional<Airport> airportOptional = fromGamer.getAirports().stream()
+            return fromGamer.getAirports().stream()
                     .filter(airport -> airport.getId() == ownId).findAny();
-            if (airportOptional.isPresent()) {
-                return airportOptional.get();
-            }
         }
-        return null;
+        throw new IllegalArgumentException(String.format("Gamer haven't %s with id %s", type, ownId));
     }
 
     @Override
+    @Cacheable("gamer")
     public Gamer getGamerById(int id) {
-        Gamer gamer = null;
-        Optional<Gamer> optionalGamer = gamerRepo.findById(id);
-        if (optionalGamer.isPresent()) {
-            gamer = optionalGamer.get();
-        }
-        return gamer;
+       return gamerRepo.findById(id)
+               .orElseThrow(() -> new IllegalStateException(String.format("Gamer with id %s is not found", id)));
     }
 
     @Override
