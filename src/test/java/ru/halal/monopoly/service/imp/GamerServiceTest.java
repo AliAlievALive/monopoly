@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.halal.monopoly.domain.Gamer;
+import ru.halal.monopoly.exception_handling.NoSuchGamerException;
 import ru.halal.monopoly.repository.GamerRepo;
 import ru.halal.monopoly.service.GamerService;
 
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 @SpringBootTest(webEnvironment = NONE)
@@ -31,5 +33,11 @@ public class GamerServiceTest {
                 .build());
         Gamer gamer = gamerService.getGamerById(saved.getId());
         then(gamer.getName()).isEqualTo(saved.getName());
+    }
+
+    @DisplayName("Exception for not found gamer")
+    @Test
+    void exception_forGamerNotFound_isReturned() {
+        assertThrows(NoSuchGamerException.class, () -> gamerService.getGamerById(-1));
     }
 }

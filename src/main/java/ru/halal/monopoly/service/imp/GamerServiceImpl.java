@@ -11,6 +11,7 @@ import ru.halal.monopoly.domain.ownerships.Airport;
 import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.domain.ownerships.Communal;
 import ru.halal.monopoly.domain.ownerships.TypeWrapper;
+import ru.halal.monopoly.exception_handling.NoSuchGamerException;
 import ru.halal.monopoly.repository.*;
 import ru.halal.monopoly.service.GamerService;
 
@@ -149,7 +150,7 @@ public class GamerServiceImpl implements GamerService {
     @Cacheable("gamer")
     public Gamer getGamerById(int id) {
        return gamerRepo.findById(id)
-               .orElseThrow(() -> new IllegalStateException(String.format("Gamer with id %s is not found", id)));
+               .orElseThrow(() -> new NoSuchGamerException(String.format("Gamer with id %s is not found", id)));
     }
 
     @Override
