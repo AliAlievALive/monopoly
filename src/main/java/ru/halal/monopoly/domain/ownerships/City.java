@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@Builder
 public class City implements CanBuildHome {
     @Id
     @SequenceGenerator(name = "city_id_sequence", sequenceName = "city_id_sequence")
@@ -25,7 +26,6 @@ public class City implements CanBuildHome {
     private int oneCityCost;
     private int twoCityCost;
     private int threeCityCost;
-    private int payToStayOnCity = 0;
     private int cost;
     private int rentCost;
     private int depositCost;
