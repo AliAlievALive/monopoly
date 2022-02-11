@@ -14,9 +14,9 @@ import java.util.Objects;
 @Setter
 @ToString
 @SuperBuilder
-public class Gamer {
+public class Gamer implements Comparable<Gamer> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private int money;
@@ -37,5 +37,10 @@ public class Gamer {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public int compareTo(Gamer gamer) {
+        return this.getName().compareTo(gamer.getName());
     }
 }

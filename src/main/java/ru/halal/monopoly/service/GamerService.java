@@ -23,7 +23,7 @@ public interface GamerService {
 
     int getMoney(Gamer gamer);
 
-    Collection<Gamer> getGamers(int limit);
+    Collection<Gamer> getGamers();
 
     Gamer getGamerById(int id);
 

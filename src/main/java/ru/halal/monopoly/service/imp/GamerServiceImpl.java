@@ -7,13 +7,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.halal.monopoly.domain.Gamer;
 import ru.halal.monopoly.domain.GamerOwns;
-import ru.halal.monopoly.domain.ownerships.*;
+import ru.halal.monopoly.domain.ownerships.Airport;
+import ru.halal.monopoly.domain.ownerships.City;
+import ru.halal.monopoly.domain.ownerships.Communal;
+import ru.halal.monopoly.domain.ownerships.TypeWrapper;
 import ru.halal.monopoly.repository.*;
 import ru.halal.monopoly.service.GamerService;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Collections;
+import java.util.List;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -97,8 +101,8 @@ public class GamerServiceImpl implements GamerService {
 
     @Override
     @Cacheable("gamers")
-    public Collection<Gamer> getGamers(int limit) {
-        return gamerRepo.findAll(PageRequest.of(0, limit)).toList();
+    public Collection<Gamer> getGamers() {
+        return gamerRepo.findAll();
     }
 
     @Override

@@ -11,8 +11,9 @@ import ru.halal.monopoly.service.GamerService;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = NONE)
 @Transactional
 public class GamerServiceTest {
     @Autowired

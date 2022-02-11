@@ -24,7 +24,7 @@ public record GamerController(GamerService gamerService) {
                         .statusCode(OK.value())
                         .status(OK)
                         .message("Gamers list limited 10")
-                        .data(of("gamer", gamerService.getGamers(10)))
+                        .data(of("gamer", gamerService.getGamers()))
                         .build()
         );
     }
