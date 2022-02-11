@@ -37,7 +37,7 @@ public class GamerServiceTest {
 
     @DisplayName("Exception for not found gamer")
     @Test
-    void exception_forGamerNotFound_isReturned() {
+    void getGamersById_forGamerNotFound_notFoundExceptionThrown() {
         assertThrows(NoSuchGamerException.class, () -> gamerService.getGamerById(-1));
     }
 }
