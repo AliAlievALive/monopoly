@@ -11,6 +11,7 @@ import ru.halal.monopoly.service.GamerService;
 
 import javax.transaction.Transactional;
 
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
@@ -38,6 +39,7 @@ public class GamerServiceTest {
     @DisplayName("Exception for not found gamer")
     @Test
     void getGamersById_forGamerNotFound_notFoundExceptionThrown() {
-        assertThrows(NoSuchGamerException.class, () -> gamerService.getGamerById(-1));
+        then(catchThrowable(() -> gamerService.getGamerById(-1)))
+                .isInstanceOf(NoSuchGamerException.class);
     }
 }
