@@ -1,0 +1,22 @@
+type Query {
+  findAllGamers: [Gamer]
+  gamerById(id: ID): Gamer
+}
+
+type Gamer {
+  id: ID!
+  name: String
+  money: Int
+  gamerOwns: [GamerOwns]
+}
+
+type GamerOwns {
+  id: ID
+  cities: String
+  airports: String
+  communals: String
+}
+
+type Mutation {
+    createGamer(name: String!, money: Int): Gamer
+}
