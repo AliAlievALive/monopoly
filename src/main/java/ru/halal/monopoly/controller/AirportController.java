@@ -1,80 +1,36 @@
 package ru.halal.monopoly.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.halal.monopoly.domain.Response;
 import ru.halal.monopoly.domain.ownerships.Airport;
 import ru.halal.monopoly.service.AirportService;
 
-import static java.time.LocalDateTime.now;
-import static java.util.Map.of;
-import static org.springframework.http.HttpStatus.OK;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/ownership/airports")
 public record AirportController(AirportService airportService) {
     @GetMapping
-    public ResponseEntity<Response> getAirportList() {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Airport list limited 4")
-                        .data(of("airport", airportService.getAirportList(4)))
-                        .build()
-        );
+    public Collection<Airport> getAirportList() {
+        return airportService.getAirportList(4);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Response> getAirport(@PathVariable int id) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Airport with " + id + " is found")
-                        .data(of("airport", airportService.getAirport(id)))
-                        .build()
-        );
+    public Airport getAirport(@PathVariable int id) {
+        return airportService.getAirport(id);
     }
 
     @PostMapping
-    public ResponseEntity<Response> saveAirport(@RequestBody Airport airport) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Airport " + airport.getName() + " is save")
-                        .data(of("airport", airportService.create(airport)))
-                        .build()
-        );
+    public void saveAirport(@RequestBody Airport airport) {
+        airportService.create(airport);
     }
 
     @PutMapping
-    public ResponseEntity<Response> updateAirport(@RequestBody Airport airport) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Airport with id " + airport.getId() + " is updated")
-                        .data(of("airport", airportService.update(airport)))
-                        .build()
-        );
+    public Airport updateAirport(@RequestBody Airport airport) {
+        return airportService.update(airport);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Response> deleteAirport(@PathVariable int id) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Airport with id " + id + " is deleted")
-                        .data(of("airport", airportService.delete(id)))
-                        .build()
-        );
+    public Boolean deleteAirport(@PathVariable int id) {
+        return airportService.delete(id);
     }
 }
