@@ -1,81 +1,37 @@
 package ru.halal.monopoly.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.halal.monopoly.domain.Response;
 import ru.halal.monopoly.domain.ownerships.City;
 import ru.halal.monopoly.service.CityService;
 
-import static java.time.LocalDateTime.now;
-import static java.util.Map.of;
-import static org.springframework.http.HttpStatus.OK;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/ownership/cities")
 public record CityController(CityService cityService) {
     @PostMapping
-    public ResponseEntity<Response> saveCity(@RequestBody City city) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("City " + city.getName() + " is save")
-                        .data(of("city", cityService.create(city)))
-                        .build()
-        );
+    public City saveCity(@RequestBody City city) {
+        return cityService.create(city);
     }
 
     @GetMapping
-    public ResponseEntity<Response> getCityList() {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Cities list limited 10")
-                        .data(of("city", cityService.getCities(10)))
-                        .build()
-        );
+    public Collection<City> getCityList() {
+        return cityService.getCities(10);
     }
 
     @GetMapping({"{id}"})
-    public ResponseEntity<Response> getCity(@PathVariable int id) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("City with " + id + " is found")
-                        .data(of("city", cityService.getCity(id)))
-                        .build()
-        );
+    public City getCity(@PathVariable int id) {
+        return cityService.getCity(id);
     }
 
     @PutMapping
-    public ResponseEntity<Response> updateCity(@RequestBody City city) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("City with id " + city.getId() + " is updated")
-                        .data(of("city", cityService.update(city)))
-                        .build()
-        );
+    public City updateCity(@RequestBody City city) {
+        return cityService.update(city);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Response> deleteCity(@PathVariable int id) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("City with id " + id + " is deleted")
-                        .data(of("city", cityService.delete(id)))
-                        .build()
-        );
+    public Boolean deleteCity(@PathVariable int id) {
+        return cityService.delete(id);
     }
 
 //    @GetMapping({"/deposit/{id}"})

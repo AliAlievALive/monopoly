@@ -1,80 +1,36 @@
 package ru.halal.monopoly.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.halal.monopoly.domain.Response;
 import ru.halal.monopoly.domain.ownerships.Communal;
 import ru.halal.monopoly.service.CommunalService;
 
-import static java.time.LocalDateTime.now;
-import static java.util.Map.of;
-import static org.springframework.http.HttpStatus.OK;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/ownership/communal")
 public record CommunalController(CommunalService communalService) {
     @GetMapping
-    public ResponseEntity<Response> getCommunalList() {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Communal list limited 2")
-                        .data(of("communal", communalService.getCommunalList(2)))
-                        .build()
-        );
+    public Collection<Communal> getCommunalList() {
+        return communalService.getCommunalList(2);
     }
 
     @GetMapping({"{id}"})
-    public ResponseEntity<Response> getCommunal(@PathVariable int id) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Communal with " + id + " is found")
-                        .data(of("communal", communalService.getCommunal(id)))
-                        .build()
-        );
+    public Communal getCommunal(@PathVariable int id) {
+        return communalService.getCommunal(id);
     }
 
     @PostMapping
-    public ResponseEntity<Response> saveCommunal(@RequestBody Communal communal) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Communal " + communal.getName() + " is save")
-                        .data(of("communal", communalService.createOrUpdate(communal)))
-                        .build()
-        );
+    public Communal saveCommunal(@RequestBody Communal communal) {
+        return communalService.createOrUpdate(communal);
     }
 
     @PutMapping
-    public ResponseEntity<Response> updateCommunal(@RequestBody Communal communal) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Communal with id " + communal.getId() + " is updated")
-                        .data(of("communal", communalService.update(communal)))
-                        .build()
-        );
+    public Communal updateCommunal(@RequestBody Communal communal) {
+        return communalService.update(communal);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Response> deleteCommunal(@PathVariable int id) {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timestamp(now())
-                        .statusCode(OK.value())
-                        .status(OK)
-                        .message("Communal with id " + id + " is deleted")
-                        .data(of("communal", communalService.delete(id)))
-                        .build()
-        );
+    public Boolean deleteCommunal(@PathVariable int id) {
+        return communalService.delete(id);
     }
 }
